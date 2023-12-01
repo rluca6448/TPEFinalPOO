@@ -12,7 +12,7 @@ public class Circle extends Ellipse {
     }
 
     public double getRadius() {
-        return super.getsMayorAxis();
+        return super.getsMayorAxis()/2;
     }
 
     @Override

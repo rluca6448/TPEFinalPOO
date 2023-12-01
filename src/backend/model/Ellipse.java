@@ -1,5 +1,7 @@
 package src.backend.model;
 
+import javafx.scene.canvas.GraphicsContext;
+
 public class Ellipse implements Figure {
 
     protected final Point centerPoint;
@@ -39,5 +41,16 @@ public class Ellipse implements Figure {
         double normalizedY = Math.pow(yDiff / getsMinorAxis(), 2);
 
         return normalizedX + normalizedY <= ELLIPSE_PRECISION_THRESHOLD;
+    }
+
+    @Override
+    public void drawFigure(GraphicsContext gc) {
+        gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
+        gc.strokeOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
+    }
+
+    @Override
+    public void moveFigure(double diffX, double diffY) {
+        centerPoint.movePoint(diffX, diffY);
     }
 }
