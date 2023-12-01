@@ -1,4 +1,4 @@
-package backend.model;
+package src.backend.model;
 
 public class Ellipse implements Figure {
 
@@ -28,4 +28,16 @@ public class Ellipse implements Figure {
         return sMinorAxis;
     }
 
+    private static final double ELLIPSE_PRECISION_THRESHOLD = 0.25;
+
+    @Override
+    public boolean figureBelongs(Point eventPoint) {
+        double xDiff = eventPoint.getX() - getCenterPoint().getX();
+        double yDiff = eventPoint.getY() - getCenterPoint().getY();
+
+        double normalizedX = Math.pow(xDiff / getsMayorAxis(), 2);
+        double normalizedY = Math.pow(yDiff / getsMinorAxis(), 2);
+
+        return normalizedX + normalizedY <= ELLIPSE_PRECISION_THRESHOLD;
+    }
 }

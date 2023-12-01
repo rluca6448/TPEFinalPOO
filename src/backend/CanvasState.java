@@ -1,6 +1,6 @@
-package backend;
+package src.backend;
 
-import backend.model.Figure;
+import src.backend.model.*;
 
 import java.util.ArrayList;
 import java.util.List;

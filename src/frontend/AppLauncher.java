@@ -1,6 +1,6 @@
-package frontend;
+package src.frontend;
 
-import backend.CanvasState;
+import src.backend.CanvasState;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

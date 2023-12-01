@@ -1,4 +1,4 @@
-package backend.model;
+package src.backend.model;
 
 public class Rectangle implements Figure {
 
@@ -22,4 +22,9 @@ public class Rectangle implements Figure {
         return String.format("Rectángulo [ %s , %s ]", topLeft, bottomRight);
     }
 
+    @Override
+    public boolean figureBelongs(Point eventPoint) {
+        return eventPoint.getX() > getTopLeft().getX() && eventPoint.getX() < getBottomRight().getX() &&
+                eventPoint.getY() > getTopLeft().getY() && eventPoint.getY() < getBottomRight().getY();
+    }
 }
