@@ -33,14 +33,26 @@ public class Ellipse implements Figure {
     private static final double ELLIPSE_PRECISION_THRESHOLD = 0.25;
 
     @Override
-    public boolean figureBelongs(Point eventPoint) {
-        double xDiff = eventPoint.getX() - getCenterPoint().getX();
-        double yDiff = eventPoint.getY() - getCenterPoint().getY();
+    public boolean figureBelongs(Point eventPoint) { // se modifico para que sea mas claro como se calcula si un punto pertenece
+        double xDiff = eventPoint.getX() - getCenterPoint().getX(); // (x - x0)^2
+        double yDiff = eventPoint.getY() - getCenterPoint().getY(); // (y - y0)^2
 
         double normalizedX = Math.pow(xDiff / getsMayorAxis(), 2);
         double normalizedY = Math.pow(yDiff / getsMinorAxis(), 2);
 
         return normalizedX + normalizedY <= ELLIPSE_PRECISION_THRESHOLD;
+    }
+
+    @Override
+    public boolean isWithin(Point topLeft, Point bottomRight) {
+        return getCenterPoint().getX() - getsMayorAxis() / 2 >= topLeft.getX() &&
+                getCenterPoint().getX() - getsMayorAxis() / 2 <= bottomRight.getX() &&
+                getCenterPoint().getX() + getsMayorAxis() / 2 <= bottomRight.getX() &&
+                getCenterPoint().getX() + getsMayorAxis() / 2 >= topLeft.getX() &&
+                getCenterPoint().getY() + getsMinorAxis() / 2 >= topLeft.getY() &&
+                getCenterPoint().getY() + getsMinorAxis() / 2 <= bottomRight.getY() &&
+                getCenterPoint().getY() - getsMinorAxis() / 2 <= bottomRight.getY() &&
+                getCenterPoint().getY() - getsMinorAxis() / 2 >= topLeft.getY();
     }
 
     @Override

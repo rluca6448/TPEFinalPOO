@@ -15,9 +15,4 @@ public class Circle extends Ellipse {
         return super.getsMayorAxis()/2;
     }
 
-    @Override
-    public boolean figureBelongs(Point eventPoint) {
-        return Math.sqrt(Math.pow(getCenterPoint().getX() - eventPoint.getX(), 2) +
-                Math.pow(getCenterPoint().getY() - eventPoint.getY(), 2)) < getRadius();
-    }
 }

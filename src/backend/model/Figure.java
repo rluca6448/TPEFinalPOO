@@ -10,4 +10,5 @@ public interface Figure {
 
     void moveFigure(double diffX, double diffY);
 
+    boolean isWithin(Point topLeft, Point bottomRight);
 }

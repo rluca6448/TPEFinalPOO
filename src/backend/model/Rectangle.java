@@ -31,6 +31,12 @@ public class Rectangle implements Figure {
     }
 
     @Override
+    public boolean isWithin(Point topLeft, Point bottomRight) {
+        return getTopLeft().getX() > topLeft.getX() && getTopLeft().getY() > topLeft.getY() &&
+                getBottomRight().getX() < bottomRight.getX() && getBottomRight().getY() < bottomRight.getY();
+    }
+
+    @Override
     public void drawFigure(GraphicsContext gc) {
         gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
