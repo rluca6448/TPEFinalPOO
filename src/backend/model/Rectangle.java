@@ -1,11 +1,5 @@
 package backend.model;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
-
 public class Rectangle extends FigureImpl {
 
     private Point topLeft, bottomRight;
@@ -71,25 +65,15 @@ public class Rectangle extends FigureImpl {
 
     @Override
     public void scaleFigure(double factor) {
-        //todo simplficar cuenta
-        double centerX = (topLeft.getX() + bottomRight.getX()) / 2; // calculo las coordenadas del centro
+        double centerX = (topLeft.getX() + bottomRight.getX()) / 2;
         double centerY = (topLeft.getY() + bottomRight.getY()) / 2;
 
-        double width = bottomRight.getX() - topLeft.getX(); // calculo el ancho y el alto
-        double height = bottomRight.getY() - topLeft.getY();
+        double halfWidth = (bottomRight.getX() - topLeft.getX()) / 2;
+        double halfHeight = (bottomRight.getY() - topLeft.getY()) / 2;
 
-        double newWidth = width * factor; // calculo los nuevos ancho y alto
-        double newHeight = height * factor;
-
-        double newTopLeftX = centerX - newWidth / 2; // calcula las nuevas coordenadas
-        double newTopLeftY = centerY - newHeight / 2;
-        double newBottomRightX = centerX + newWidth / 2;
-        double newBottomRightY = centerY + newHeight / 2;
-
-        topLeft = new Point(newTopLeftX, newTopLeftY); // creo los nuevos puntos del nuevo rectangulo
-        bottomRight = new Point(newBottomRightX, newBottomRightY);
+        topLeft = new Point(centerX - halfWidth * factor, centerY - halfHeight * factor);
+        bottomRight = new Point(centerX + halfWidth * factor, centerY + halfHeight * factor);
     }
-
 
 
     @Override

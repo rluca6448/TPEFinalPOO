@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import frontend.FrontColor;
 import backend.model.*;
 
 public interface RectangleFrontInterface extends FigureFront{
@@ -19,7 +20,7 @@ public interface RectangleFrontInterface extends FigureFront{
                 getTopLeft().getY() + 10.0,
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()),
                 Math.abs(getTopLeft().getY() - getBottomRight().getY()));
-        gc.setFill(getColor());
+        gc.setFill(FrontColor.RGBtoColor(getColor()));
         drawFigure(gc);
     }
 
@@ -28,8 +29,8 @@ public interface RectangleFrontInterface extends FigureFront{
         if (stateGradient() != EffectState.TRUE) return;
         LinearGradient linearGradient = new LinearGradient(0, 0, 1, 0, true,
                 CycleMethod.NO_CYCLE,
-                new Stop(0, getColor()),
-                new Stop(1, getColor().invert()));
+                new Stop(0, FrontColor.RGBtoColor(getColor())),
+                new Stop(1, FrontColor.RGBtoColor(getColor()).invert()));
         gc.setFill(linearGradient);
         gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
@@ -50,10 +51,11 @@ public interface RectangleFrontInterface extends FigureFront{
         gc.strokeLine(x + width, y, x + width, y + height);
         gc.strokeLine(x, y + height, x + width, y + height);
         gc.setLineWidth(1);
+        drawFigure(gc);
     }
 
     default void drawFigure(GraphicsContext gc) {
-        gc.setFill(getColor());
+        gc.setFill(FrontColor.RGBtoColor(getColor()));
         gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
         gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(),

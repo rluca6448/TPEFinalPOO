@@ -1,7 +1,7 @@
 package backend.model;
 
 import backend.EffectState;
-import javafx.scene.paint.Color;
+import backend.RGBColor;
 
 public interface Figure {
 
@@ -22,18 +22,25 @@ public interface Figure {
 
     //todo que en lugar de usar el color de javafx guarde el hexa del color y lo vaya convirtiendo el front a color de javafx
     //todo que el color se pase como param del constructor
-    void setFillColor(Color color);
-    Color getColor();
+    void setFillColor(RGBColor RGBColor);
+
+    RGBColor getColor();
 
     void addShadow();
+
     EffectState stateShadow();
+
     void deleteShadow();
 
     void addGradient();
+
     EffectState stateGradient();
+
     void deleteGradient();
 
     void addBevel();
+
     EffectState stateBevel();
+
     void deleteBevel();
 }

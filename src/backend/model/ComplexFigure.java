@@ -1,24 +1,22 @@
 package backend.model;
 
 import backend.EffectState;
-import frontend.model.FigureFront;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import backend.RGBColor;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figure {
-    //todo que extienda a hashset
 
     public ComplexFigure(Set<E> selectedFigures) {
         super();
         addAll(selectedFigures);
     }
 
-    public ComplexFigure(){
+    public ComplexFigure() {
         super();
     }
+
     public Set<E> getFigures() {
         return Set.copyOf(this);
     }
@@ -84,7 +82,6 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
     }
 
 
-
     @Override
     public String toString() {
         StringBuilder toReturn = new StringBuilder();
@@ -94,23 +91,24 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
         return toReturn.toString();
     }
 
-    public void addShadow(){
+    public void addShadow() {
         for (E figure : this) {
             figure.addShadow();
         }
     }
+
     //todo modularizar en un getState privado que reciba la funcion lambda de cual state verificar
-    public EffectState stateShadow(){
+    public EffectState stateShadow() {
         boolean oneShadowed = false;
         boolean oneUnShadowed = false;
         boolean oneUndetermined = false;
         for (E figure : this) {
-            switch (figure.stateShadow()){
-                case TRUE -> {oneShadowed = true;}
-                case FALSE -> {oneUnShadowed = true;}
-                case UNDETERMINED -> {oneUndetermined = true;}
+            switch (figure.stateShadow()) {
+                case TRUE -> oneShadowed = true;
+                case FALSE -> oneUnShadowed = true;
+                case UNDETERMINED -> oneUndetermined = true;
             }
-            if ((oneShadowed && oneUnShadowed) || oneUndetermined){
+            if ((oneShadowed && oneUnShadowed) || oneUndetermined) {
                 //todo
                 System.out.println("undetermined");
                 return EffectState.UNDETERMINED;
@@ -120,30 +118,32 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
         System.out.println(oneShadowed ? "true" : "false");
         return oneShadowed ? EffectState.TRUE : EffectState.FALSE;
     }
-    //todo: acordarse del caso donde el checkbox es ideterminado
+    //todo: acordarse del caso donde el checkbox es indeterminado
 
-    public void deleteShadow(){
+    public void deleteShadow() {
         for (E figure : this) {
             figure.deleteShadow();
         }
     }
-    public void addGradient(){
+
+    public void addGradient() {
         for (E figure : this) {
             figure.addGradient();
         }
     }
+
     //todo modularizar en un getState privado que reciba la funcion lambda de cual state verificar
-    public EffectState stateGradient(){
+    public EffectState stateGradient() {
         boolean oneGradiented = false;
         boolean oneUnGradiented = false;
         boolean oneUndetermined = false;
         for (E figure : this) {
-            switch (figure.stateGradient()){
-                case TRUE -> {oneGradiented = true;}
-                case FALSE -> {oneUnGradiented = true;}
-                case UNDETERMINED -> {oneUndetermined = true;}
+            switch (figure.stateGradient()) {
+                case TRUE -> oneGradiented = true;
+                case FALSE -> oneUnGradiented = true;
+                case UNDETERMINED -> oneUndetermined = true;
             }
-            if ((oneGradiented && oneUnGradiented) || oneUndetermined){
+            if ((oneGradiented && oneUnGradiented) || oneUndetermined) {
                 //todo
                 System.out.println("undetermined");
                 return EffectState.UNDETERMINED;
@@ -151,28 +151,31 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
         }
         return oneGradiented ? EffectState.TRUE : EffectState.FALSE;
     }
-    public void deleteGradient(){
+
+    public void deleteGradient() {
         for (E figure : this) {
             figure.deleteGradient();
         }
     }
-    public void addBevel(){
+
+    public void addBevel() {
         for (E figure : this) {
             figure.addBevel();
         }
     }
+
     //todo modularizar en un getState privado que reciba la funcion lambda de cual state verificar
-    public EffectState stateBevel(){
+    public EffectState stateBevel() {
         boolean oneBeveled = false;
         boolean oneUnBeveled = false;
         boolean oneUndetermined = false;
         for (E figure : this) {
-            switch (figure.stateBevel()){
-                case TRUE -> {oneBeveled = true;}
-                case FALSE -> {oneUnBeveled = true;}
-                case UNDETERMINED -> {oneUndetermined = true;}
+            switch (figure.stateBevel()) {
+                case TRUE -> oneBeveled = true;
+                case FALSE -> oneUnBeveled = true;
+                case UNDETERMINED -> oneUndetermined = true;
             }
-            if ((oneBeveled && oneUnBeveled) || oneUndetermined){
+            if ((oneBeveled && oneUnBeveled) || oneUndetermined) {
                 //todo
                 System.out.println("undetermined");
                 return EffectState.UNDETERMINED;
@@ -180,18 +183,21 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
         }
         return oneBeveled ? EffectState.TRUE : EffectState.FALSE;
     }
-    public void deleteBevel(){
+
+    public void deleteBevel() {
         for (E figure : this) {
             figure.deleteBevel();
         }
     }
-    public void setFillColor(Color color) {
+
+    public void setFillColor(RGBColor RGBColor) {
         for (E figure : this) {
-            figure.setFillColor(color);
+            figure.setFillColor(RGBColor);
         }
     }
-    public Color getColor() {
-        return Color.YELLOW;
+
+    public RGBColor getColor() {
+        return null;
     }
     //la función getColor nunca se usa; solo está implementada porque lo pide la interface
 

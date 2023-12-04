@@ -14,9 +14,6 @@ import javafx.scene.paint.Color;
 import backend.*;
 import backend.model.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class PaintPane extends BorderPane {
 
     // BackEnd
@@ -196,7 +193,9 @@ public class PaintPane extends BorderPane {
             } else {
                 return;
             }
-            newFigure.setFillColor(fillColorPicker.getValue());
+            newFigure.setFillColor(new RGBColor(fillColorPicker.getValue().getRed(),
+                    fillColorPicker.getValue().getGreen(),
+                    fillColorPicker.getValue().getBlue()));
             canvasState.addFigure(newFigure);
             startPoint = null;
             redrawCanvas();

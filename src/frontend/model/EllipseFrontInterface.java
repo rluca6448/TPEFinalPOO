@@ -2,6 +2,7 @@ package frontend.model;
 
 import backend.EffectState;
 import backend.model.Point;
+import frontend.FrontColor;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -20,7 +21,7 @@ public interface EllipseFrontInterface extends FigureFront {
         gc.setFill(Color.GRAY);
         gc.fillOval(getCenterPoint().getX() - getsMayorAxis() / 2 + 10.0,
                 getCenterPoint().getY() - getsMinorAxis() / 2 + 10.0, getsMayorAxis(), getsMinorAxis());
-        gc.setFill(getColor());
+        gc.setFill(FrontColor.RGBtoColor(getColor()));
         drawFigure(gc);
     }
 
@@ -29,8 +30,8 @@ public interface EllipseFrontInterface extends FigureFront {
         if (stateGradient() != EffectState.TRUE) return;
         RadialGradient radialGradient = new RadialGradient(0, 0, 0.5, 0.5, 0.5, true,
                 CycleMethod.NO_CYCLE,
-                new Stop(0, getColor()),
-                new Stop(1, getColor().invert()));
+                new Stop(0, FrontColor.RGBtoColor(getColor())),
+                new Stop(1, FrontColor.RGBtoColor(getColor()).invert()));
         gc.setFill(radialGradient);
         gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
     }
@@ -46,11 +47,12 @@ public interface EllipseFrontInterface extends FigureFront {
         gc.setStroke(Color.BLACK);
         gc.strokeArc(arcX, arcY, getsMayorAxis(), getsMinorAxis(), 225, 180, ArcType.OPEN);
         gc.setLineWidth(1);
+        drawFigure(gc);
     }
 
 
     default void drawFigure(GraphicsContext gc) {
-        gc.setFill(getColor());
+        gc.setFill(FrontColor.RGBtoColor(getColor()));
         gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
         gc.strokeOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
     }

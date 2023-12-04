@@ -1,12 +1,5 @@
 package backend.model;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.ArcType;
-
 public class Ellipse extends FigureImpl {
 
     protected Point centerPoint;
