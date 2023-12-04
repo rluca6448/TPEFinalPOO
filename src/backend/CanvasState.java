@@ -1,6 +1,6 @@
-package src.backend;
+package backend;
 
-import src.backend.model.*;
+import backend.model.*;
 
 import java.util.ArrayList;
 import java.util.List;

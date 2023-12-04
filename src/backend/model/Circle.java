@@ -1,4 +1,4 @@
-package src.backend.model;
+package backend.model;
 
 public class Circle extends Ellipse {
 

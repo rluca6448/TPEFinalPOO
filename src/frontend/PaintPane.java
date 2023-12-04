@@ -1,4 +1,4 @@
-package src.frontend;
+package frontend;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,8 +10,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import src.backend.CanvasState;
-import src.backend.model.*;
+import backend.*;
+import backend.model.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
