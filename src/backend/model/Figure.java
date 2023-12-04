@@ -1,5 +1,6 @@
 package backend.model;
 
+import backend.EffectState;
 import javafx.scene.paint.Color;
 
 public interface Figure {
@@ -25,14 +26,14 @@ public interface Figure {
     Color getColor();
 
     void addShadow();
-    boolean hasShadow();
+    EffectState stateShadow();
     void deleteShadow();
 
     void addGradient();
-    boolean hasGradient();
+    EffectState stateGradient();
     void deleteGradient();
 
     void addBevel();
-    boolean hasBevel();
+    EffectState stateBevel();
     void deleteBevel();
 }

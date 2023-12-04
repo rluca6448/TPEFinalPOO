@@ -1,5 +1,6 @@
 package frontend.model;
 
+import backend.EffectState;
 import backend.model.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -15,7 +16,7 @@ public interface EllipseFrontInterface extends FigureFront {
 
     //todo que la sombra salga atras
     default void applyShadow(GraphicsContext gc) {
-        if (!hasShadow()) return;
+        if (stateShadow() != EffectState.TRUE) return;
         gc.setFill(Color.GRAY);
         gc.fillOval(getCenterPoint().getX() - getsMayorAxis() / 2 + 10.0,
                 getCenterPoint().getY() - getsMinorAxis() / 2 + 10.0, getsMayorAxis(), getsMinorAxis());
@@ -25,7 +26,7 @@ public interface EllipseFrontInterface extends FigureFront {
 
 
     default void applyGradient(GraphicsContext gc) {
-        if (!hasGradient()) return;
+        if (stateGradient() != EffectState.TRUE) return;
         RadialGradient radialGradient = new RadialGradient(0, 0, 0.5, 0.5, 0.5, true,
                 CycleMethod.NO_CYCLE,
                 new Stop(0, getColor()),
@@ -35,7 +36,7 @@ public interface EllipseFrontInterface extends FigureFront {
 
 
     default void applyBevel(GraphicsContext gc) {
-        if (!hasBevel()) return;
+        if (stateBevel() != EffectState.TRUE) return;
         double arcX = getCenterPoint().getX() - getsMayorAxis();
         double arcY = getCenterPoint().getY() - getsMinorAxis();
         gc.setLineWidth(10);

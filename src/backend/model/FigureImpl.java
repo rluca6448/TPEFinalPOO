@@ -1,4 +1,5 @@
 package backend.model;
+import backend.EffectState;
 import javafx.scene.paint.Color;
 public abstract class FigureImpl implements Figure{
     private boolean shadow, gradient, bevel;
@@ -13,8 +14,10 @@ public abstract class FigureImpl implements Figure{
     public void addShadow(){
         shadow = true;
     }
-    public boolean hasShadow(){
-        return shadow;
+    public EffectState stateShadow(){
+        //todo
+        System.out.println(shadow ? "true" : "false");
+        return shadow ?  EffectState.TRUE : EffectState.FALSE;
     }
     public void deleteShadow(){
         shadow = false;
@@ -23,8 +26,8 @@ public abstract class FigureImpl implements Figure{
     public void addGradient(){
         gradient = true;
     }
-    public boolean hasGradient(){
-        return gradient;
+    public EffectState stateGradient(){
+        return gradient ?  EffectState.TRUE : EffectState.FALSE;
     }
     public void deleteGradient(){
         gradient = false;
@@ -33,8 +36,8 @@ public abstract class FigureImpl implements Figure{
     public void addBevel(){
         bevel = true;
     }
-    public boolean hasBevel(){
-        return bevel;
+    public EffectState stateBevel(){
+        return bevel ?  EffectState.TRUE : EffectState.FALSE;
     }
     public void deleteBevel(){
         bevel = false;

@@ -1,5 +1,6 @@
 package frontend.model;
 
+import backend.EffectState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -12,7 +13,7 @@ public interface RectangleFrontInterface extends FigureFront{
     Point getBottomRight();
 
     default void applyShadow(GraphicsContext gc) {
-        if (!hasShadow()) return;
+        if (stateShadow() != EffectState.TRUE) return;
         gc.setFill(Color.GRAY);
         gc.fillRect(getTopLeft().getX() + 10.0,
                 getTopLeft().getY() + 10.0,
@@ -24,7 +25,7 @@ public interface RectangleFrontInterface extends FigureFront{
 
 
     default void applyGradient(GraphicsContext gc) {
-        if (!hasGradient()) return;
+        if (stateGradient() != EffectState.TRUE) return;
         LinearGradient linearGradient = new LinearGradient(0, 0, 1, 0, true,
                 CycleMethod.NO_CYCLE,
                 new Stop(0, getColor()),
@@ -34,7 +35,7 @@ public interface RectangleFrontInterface extends FigureFront{
 
 
     default void applyBevel(GraphicsContext gc) {
-        if (!hasBevel()) return;
+        if (stateBevel() != EffectState.TRUE) return;
         double x = getTopLeft().getX();
         double y = getTopLeft().getY();
         double width = Math.abs(x - getBottomRight().getX());

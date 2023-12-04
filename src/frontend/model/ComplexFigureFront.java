@@ -10,6 +10,9 @@ public class ComplexFigureFront extends ComplexFigure<FigureFront> implements Fi
     public ComplexFigureFront(Set<FigureFront> selectedFigures) {
         super(selectedFigures);
     }
+    public ComplexFigureFront(){
+        super();
+    }
     @Override
     public void drawFigure(GraphicsContext gc) {
         for (FigureFront figure : getFigures()) {
