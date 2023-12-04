@@ -14,9 +14,7 @@ import javafx.scene.paint.Color;
 import backend.*;
 import backend.model.*;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class PaintPane extends BorderPane {
@@ -329,15 +327,10 @@ public class PaintPane extends BorderPane {
             } else {
                 gc.setStroke(lineColor);
             }
-            gc.setFill(figure.getColor());
             figure.drawFigure(gc);
-            //todo: if has shadow y if has no shadow
             figure.applyShadow(gc);
             figure.applyGradient(gc);
             figure.applyBevel(gc);
-
-
-
         }
     }
 }

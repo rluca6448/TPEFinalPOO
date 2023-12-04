@@ -47,6 +47,7 @@ public interface EllipseFrontInterface extends FigureFront {
 
 
     default void drawFigure(GraphicsContext gc) {
+        gc.setFill(getColor());
         gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
         gc.strokeOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
     }
