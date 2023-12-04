@@ -9,6 +9,7 @@ public class StatusPane extends BorderPane {
 	private final Label statusLabel;
 
 	public StatusPane() {
+		//todo usar enum Color
 		setStyle("-fx-background-color: #4EBCF8");
 		statusLabel = new Label("");
 		statusLabel.setAlignment(Pos.CENTER);

@@ -6,27 +6,21 @@ import javafx.scene.paint.Color;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ComplexFigure implements Figure {
+public class ComplexFigure<E extends Figure> implements Figure {
 
-    private final Set<Figure> figures = new HashSet<>();
+    private final Set<E> figures = new HashSet<>();
 
-    public ComplexFigure(Set<Figure> selectedFigures) {
-        for (Figure figure : selectedFigures) {
-            if (figure instanceof ComplexFigure complexFigure) {
-                figures.addAll(complexFigure.getFigures());
-            } else {
-                figures.add(figure);
-            }
-        }
+    public ComplexFigure(Set<E> selectedFigures) {
+        figures.addAll(selectedFigures);
     }
 
-    public Set<Figure> getFigures() {
-        return figures;
+    public Set<E> getFigures() {
+        return new HashSet<>(figures);
     }
 
     @Override
     public boolean figureBelongs(Point eventPoint) {
-        for (Figure figure : figures) {
+        for (E figure : figures) {
             if (figure.figureBelongs(eventPoint)) {
                 return true;
             }
@@ -35,22 +29,15 @@ public class ComplexFigure implements Figure {
     }
 
     @Override
-    public void drawFigure(GraphicsContext gc) {
-        for (Figure figure : figures) {
-            figure.drawFigure(gc);
-        }
-    }
-
-    @Override
     public void moveFigure(double diffX, double diffY) {
-        for (Figure figure : figures) {
+        for (E figure : figures) {
             figure.moveFigure(diffX, diffY);
         }
     }
 
     @Override
     public boolean isWithin(Point topLeft, Point bottomRight) {
-        for (Figure figure : figures) {
+        for (E figure : figures) {
             if (!figure.isWithin(topLeft, bottomRight)) {
                 return false;
             }
@@ -59,68 +46,106 @@ public class ComplexFigure implements Figure {
     }
 
     @Override
-    public Figure rotateFigure() {
-        Set<Figure> toReturn = new HashSet<>();
-        for (Figure figure : figures) {
-            toReturn.add(figure.rotateFigure());
-        }
-        return new ComplexFigure(toReturn);
-    }
-
-    @Override
-    public Figure flipHorizontally() {
-        Set<Figure> toReturn = new HashSet<>();
-        for (Figure figure : figures) {
-            toReturn.add(figure.flipHorizontally());
-        }
-        return new ComplexFigure(toReturn);
-    }
-
-    @Override
-    public Figure flipVertically() {
-        Set<Figure> toReturn = new HashSet<>();
-        for (Figure figure : figures) {
-            toReturn.add(figure.flipVertically());
-        }
-        return new ComplexFigure(toReturn);
-    }
-
-    @Override
-    public Figure scaleFigure(double factor) {
-        Set<Figure> toReturn = new HashSet<>();
-        for (Figure figure : figures) {
-            toReturn.add(figure.scaleFigure(factor));
-        }
-        return new ComplexFigure(toReturn);
-    }
-
-    @Override
-    public void applyShadow(GraphicsContext gc) {
-        for (Figure figure : figures) {
-            figure.applyShadow(gc);
+    public void rotateFigure() {
+        for (E figure : figures) {
+            figure.rotateFigure();
         }
     }
 
     @Override
-    public void applyGradient(GraphicsContext gc, Color fillColor) {
-        for (Figure figure : figures) {
-            figure.applyGradient(gc, fillColor);
+    public void flipHorizontally() {
+        for (E figure : figures) {
+            figure.flipHorizontally();
         }
     }
 
     @Override
-    public void applyBevel(GraphicsContext gc) {
-        for (Figure figure : figures) {
-            figure.applyBevel(gc);
+    public void flipVertically() {
+        for (E figure : figures) {
+            figure.flipVertically();
         }
     }
+
+    @Override
+    public void scaleFigure(double factor) {
+        for (E figure : figures) {
+            figure.scaleFigure(factor);
+        }
+    }
+
+
 
     @Override
     public String toString() {
         StringBuilder toReturn = new StringBuilder();
-        for (Figure figure : figures) {
+        for (E figure : figures) {
             toReturn.append(figure.toString()).append(", ");
         }
         return toReturn.toString();
+    }
+
+    public void addShadow(){
+        for (E figure : figures) {
+            figure.addShadow();
+        }
+    }
+    public boolean hasShadow(){
+        for (E figure : figures) {
+            if (!figure.hasShadow()){
+                return false;
+            }
+        }
+        return true;
+    }
+    //todo: acordarse del caso donde el checkbox es ideterminado
+
+    public void deleteShadow(){
+        for (E figure : figures) {
+            figure.deleteShadow();
+        }
+    }
+    public void addGradient(){
+        for (E figure : figures) {
+            figure.addGradient();
+        }
+    }
+    public boolean hasGradient(){
+        for (E figure : figures) {
+            if (!figure.hasGradient()){
+                return false;
+            }
+        }
+        return true;
+    }
+    public void deleteGradient(){
+        for (E figure : figures) {
+            figure.deleteGradient();
+        }
+    }
+    public void addBevel(){
+        for (E figure : figures) {
+            figure.addBevel();
+        }
+    }
+    public boolean hasBevel(){
+        for (E figure : figures) {
+            if (!figure.hasBevel()){
+                return false;
+            }
+        }
+        return true;
+    }
+    public void deleteBevel(){
+        for (E figure : figures) {
+            figure.deleteBevel();
+        }
+    }
+    public void setFillColor(Color color) {
+        for (E figure : figures) {
+            figure.setFillColor(color);
+        }
+    }
+    public Color getColor() {
+        return Color.YELLOW;
     }
 }

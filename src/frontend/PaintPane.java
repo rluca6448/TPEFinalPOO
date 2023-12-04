@@ -1,5 +1,6 @@
 package frontend;
 
+import frontend.model.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -21,7 +22,7 @@ import java.util.Set;
 public class PaintPane extends BorderPane {
 
     // BackEnd
-    CanvasState canvasState;
+    CanvasState<FigureFront> canvasState;
 
     // Canvas y relacionados
     Canvas canvas = new Canvas(800, 600);
@@ -54,15 +55,14 @@ public class PaintPane extends BorderPane {
     Point startPoint;
 
     // Seleccionar una figura
-    Set<Figure> selectedFigures = new HashSet<>();
+    Set<FigureFront> selectedFigures = new HashSet<>();
 
     // StatusBar
     StatusPane statusPane;
 
     // Colores de relleno de cada figura
-    Map<Figure, Color> figureColorMap = new HashMap<>();
 
-    public PaintPane(CanvasState canvasState, StatusPane statusPane) {
+    public PaintPane(CanvasState<FigureFront> canvasState, StatusPane statusPane) {
         this.canvasState = canvasState;
         this.statusPane = statusPane;
 
@@ -79,25 +79,40 @@ public class PaintPane extends BorderPane {
         buttonsBox.getChildren().addAll(toolsArr);
         buttonsBox.getChildren().add(fillColorPicker);
         buttonsBox.setPadding(new Insets(5));
+        //todo usar enum Color
         buttonsBox.setStyle("-fx-background-color: #999");
         buttonsBox.setPrefWidth(100);
 
         CheckBox[] styleArr = {shadowButton, gradientButton, beveledButton};
 
-        shadowButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                for (Figure figure : selectedFigures) {
-                    figure.applyShadow(gc);
+//        shadowButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+//            if (newValue) {
+//                for (FigureFront figure : selectedFigures) {
+//                    figure.applyShadow(gc);
+//                }
+//            } else {
+//                redrawCanvas();
+//            }
+//        });
+
+        shadowButton.setOnAction(event -> {
+            if (shadowButton.isSelected()){
+                for (FigureFront figure : selectedFigures) {
+                    figure.addShadow();
                 }
-            } else {
-                redrawCanvas();
             }
+            else {
+                for (FigureFront figure : selectedFigures) {
+                    figure.deleteShadow();
+                }
+            }
+            redrawCanvas();
         });
 
         gradientButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                for (Figure figure : selectedFigures) {
-                    figure.applyGradient(gc, fillColorPicker.getValue());
+                for (FigureFront figure : selectedFigures) {
+                    figure.applyGradient(gc);
                 }
             } else {
                 redrawCanvas();
@@ -106,7 +121,7 @@ public class PaintPane extends BorderPane {
 
         beveledButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                for (Figure figure : selectedFigures) {
+                for (FigureFront figure : selectedFigures) {
                     figure.applyBevel(gc);
                 }
             } else {
@@ -136,24 +151,24 @@ public class PaintPane extends BorderPane {
             if (endPoint.getX() < startPoint.getX() || endPoint.getY() < startPoint.getY()) {
                 return;
             }
-            Figure newFigure;
+            FigureFront newFigure;
             if (rectangleButton.isSelected()) {
-                newFigure = new Rectangle(startPoint, endPoint);
+                newFigure = new RectangleFront(startPoint, endPoint);
             } else if (circleButton.isSelected()) {
                 double circleRadius = Math.abs(endPoint.getX() - startPoint.getX());
-                newFigure = new Circle(startPoint, circleRadius);
+                newFigure = new CircleFront(startPoint, circleRadius);
             } else if (squareButton.isSelected()) {
                 double size = Math.abs(endPoint.getX() - startPoint.getX());
-                newFigure = new Square(startPoint, size);
+                newFigure = new SquareFront(startPoint, size);
             } else if (ellipseButton.isSelected()) {
                 Point centerPoint = new Point(Math.abs(endPoint.getX() + startPoint.getX()) / 2, (Math.abs((endPoint.getY() + startPoint.getY())) / 2));
                 double sMayorAxis = Math.abs(endPoint.getX() - startPoint.getX());
                 double sMinorAxis = Math.abs(endPoint.getY() - startPoint.getY());
-                newFigure = new Ellipse(centerPoint, sMayorAxis, sMinorAxis);
+                newFigure = new EllipseFront(centerPoint, sMayorAxis, sMinorAxis);
             } else {
                 return;
             }
-            figureColorMap.put(newFigure, fillColorPicker.getValue());
+            newFigure.setFillColor(fillColorPicker.getValue());
             canvasState.addFigure(newFigure);
             startPoint = null;
             redrawCanvas();
@@ -161,7 +176,7 @@ public class PaintPane extends BorderPane {
 
         deleteButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                for (Figure figure : selectedFigures) {
+                for (FigureFront figure : selectedFigures) {
                     canvasState.deleteFigure(figure);
                 }
                 selectedFigures.clear();
@@ -171,9 +186,9 @@ public class PaintPane extends BorderPane {
 
         groupButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                Figure newFigure = new ComplexFigure(selectedFigures);
+                FigureFront newFigure = new ComplexFigureFront(selectedFigures);
                 canvasState.addFigure(newFigure);
-                for (Figure figure : selectedFigures) {
+                for (FigureFront figure : selectedFigures) {
                     canvasState.deleteFigure(figure);
                 }
                 selectedFigures.clear();
@@ -183,9 +198,9 @@ public class PaintPane extends BorderPane {
 
         ungroupButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                for (Figure figure : selectedFigures) {
-                    if (figure instanceof ComplexFigure complexFigure) {
-                        for (Figure simpleFigure : complexFigure.getFigures()) {
+                for (FigureFront figure : selectedFigures) {
+                    if (figure instanceof ComplexFigureFront complexFigure) {
+                        for (FigureFront simpleFigure : complexFigure.getFigures()) {
                             canvasState.addFigure(simpleFigure);
                         }
                         canvasState.deleteFigure(figure);
@@ -198,18 +213,9 @@ public class PaintPane extends BorderPane {
 
         rotateRightButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                Set<Figure> newFigures = new HashSet<>();
-                Set<Figure> oldFigures = new HashSet<>();
                 for (Figure figure : selectedFigures) {
-                    Figure newFigure = figure.rotateFigure();
-                    oldFigures.add(figure);
-                    newFigures.add(newFigure);
-                    figureColorMap.put(newFigure, figureColorMap.get(figure));
-                    canvasState.deleteFigure(figure);
-                    canvasState.addFigure(newFigure);
+                    figure.rotateFigure();
                 }
-                selectedFigures.removeAll(oldFigures);
-                selectedFigures.addAll(newFigures);
                 startPoint = null;
                 redrawCanvas();
             }
@@ -217,18 +223,9 @@ public class PaintPane extends BorderPane {
 
         flipHorizontallyButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                Set<Figure> newFigures = new HashSet<>();
-                Set<Figure> oldFigures = new HashSet<>();
-                for (Figure figure : selectedFigures) {
-                    Figure newFigure = figure.flipHorizontally();
-                    oldFigures.add(figure);
-                    newFigures.add(newFigure);
-                    figureColorMap.put(newFigure, figureColorMap.get(figure));
-                    canvasState.deleteFigure(figure);
-                    canvasState.addFigure(newFigure);
+                for (FigureFront figure : selectedFigures) {
+                    figure.flipHorizontally();
                 }
-                selectedFigures.removeAll(oldFigures);
-                selectedFigures.addAll(newFigures);
                 startPoint = null;
                 redrawCanvas();
             }
@@ -236,18 +233,9 @@ public class PaintPane extends BorderPane {
 
         flipVerticallyButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                Set<Figure> newFigures = new HashSet<>();
-                Set<Figure> oldFigures = new HashSet<>();
-                for (Figure figure : selectedFigures) {
-                    Figure newFigure = figure.flipVertically();
-                    oldFigures.add(figure);
-                    newFigures.add(newFigure);
-                    figureColorMap.put(newFigure, figureColorMap.get(figure));
-                    canvasState.deleteFigure(figure);
-                    canvasState.addFigure(newFigure);
+                for (FigureFront figure : selectedFigures) {
+                    figure.flipVertically();
                 }
-                selectedFigures.removeAll(oldFigures);
-                selectedFigures.addAll(newFigures);
                 startPoint = null;
                 redrawCanvas();
             }
@@ -255,18 +243,9 @@ public class PaintPane extends BorderPane {
 
         scaleButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                Set<Figure> newFigures = new HashSet<>();
-                Set<Figure> oldFigures = new HashSet<>();
-                for (Figure figure : selectedFigures) {
-                    Figure newFigure = figure.scaleFigure(1.25);
-                    oldFigures.add(figure);
-                    newFigures.add(newFigure);
-                    figureColorMap.put(newFigure, figureColorMap.get(figure));
-                    canvasState.deleteFigure(figure);
-                    canvasState.addFigure(newFigure);
+                for (FigureFront figure : selectedFigures) {
+                    figure.scaleFigure(1.25);
                 }
-                selectedFigures.removeAll(oldFigures);
-                selectedFigures.addAll(newFigures);
                 startPoint = null;
                 redrawCanvas();
             }
@@ -274,18 +253,9 @@ public class PaintPane extends BorderPane {
 
         downscaleButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                Set<Figure> newFigures = new HashSet<>();
-                Set<Figure> oldFigures = new HashSet<>();
                 for (Figure figure : selectedFigures) {
-                    Figure newFigure = figure.scaleFigure(0.75);
-                    oldFigures.add(figure);
-                    newFigures.add(newFigure);
-                    figureColorMap.put(newFigure, figureColorMap.get(figure));
-                    canvasState.deleteFigure(figure);
-                    canvasState.addFigure(newFigure);
+                    figure.scaleFigure(0.75);
                 }
-                selectedFigures.removeAll(oldFigures);
-                selectedFigures.addAll(newFigures);
                 startPoint = null;
                 redrawCanvas();
             }
@@ -295,7 +265,7 @@ public class PaintPane extends BorderPane {
             Point eventPoint = new Point(event.getX(), event.getY());
             boolean found = false;
             StringBuilder label = new StringBuilder();
-            for (Figure figure : canvasState.figures()) {
+            for (FigureFront figure : canvasState.figures()) {
                 if (figure.figureBelongs(eventPoint)) {
                     found = true;
                     label.append(figure);
@@ -307,13 +277,16 @@ public class PaintPane extends BorderPane {
                 statusPane.updateStatus(eventPoint.toString());
             }
         });
-
+        //todo que se actualice al primer clic
         canvas.setOnMouseClicked(event -> {
+            for (FigureFront figure : selectedFigures){
+                shadowButton.setSelected(figure.hasShadow());
+            }
             if (selectionButton.isSelected()) {
                 Point eventPoint = new Point(event.getX(), event.getY());
                 boolean found = false;
                 StringBuilder label = new StringBuilder("Se seleccionó: ");
-                for (Figure figure : canvasState.figures()) {
+                for (FigureFront figure : canvasState.figures()) {
                     if (figure.isWithin(startPoint, eventPoint) || figure.figureBelongs(eventPoint)) {
                         selectedFigures.add(figure);
                         found = true;
@@ -350,14 +323,21 @@ public class PaintPane extends BorderPane {
 
     void redrawCanvas() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (Figure figure : canvasState.figures()) {
+        for (FigureFront figure : canvasState.figures()) {
             if (selectedFigures.contains(figure)) {
                 gc.setStroke(Color.RED);
             } else {
                 gc.setStroke(lineColor);
             }
-            gc.setFill(figureColorMap.get(figure));
+            gc.setFill(figure.getColor());
             figure.drawFigure(gc);
+            //todo: if has shadow y if has no shadow
+            figure.applyShadow(gc);
+            figure.applyGradient(gc);
+            figure.applyBevel(gc);
+
+
+
         }
     }
 }

@@ -1,29 +1,38 @@
 package backend.model;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public interface Figure {
 
     boolean figureBelongs(Point eventPoint);
 
-    void drawFigure(GraphicsContext gc);
 
     void moveFigure(double diffX, double diffY);
 
     boolean isWithin(Point topLeft, Point bottomRight);
 
-    Figure rotateFigure();
+    void rotateFigure();
 
-    Figure flipHorizontally();
+    void flipHorizontally();
 
-    Figure flipVertically();
+    void flipVertically();
 
-    Figure scaleFigure(double factor);
+    void scaleFigure(double factor);
 
-    void applyShadow(GraphicsContext gc);
+    //todo que en lugar de usar el color de javafx guarde el hexa del color y lo vaya convirtiendo el front a color de javafx
+    //todo que el color se pase como param del constructor
+    void setFillColor(Color color);
+    Color getColor();
 
-    void applyGradient(GraphicsContext gc, Color fillColor);
+    void addShadow();
+    boolean hasShadow();
+    void deleteShadow();
 
-    void applyBevel(GraphicsContext gc);
+    void addGradient();
+    boolean hasGradient();
+    void deleteGradient();
+
+    void addBevel();
+    boolean hasBevel();
+    void deleteBevel();
 }

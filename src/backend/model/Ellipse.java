@@ -7,10 +7,10 @@ import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.ArcType;
 
-public class Ellipse implements Figure {
+public class Ellipse extends FigureImpl {
 
-    protected final Point centerPoint;
-    protected final double sMayorAxis, sMinorAxis;
+    protected Point centerPoint;
+    protected double sMayorAxis, sMinorAxis;
 
     public Ellipse(Point centerPoint, double sMayorAxis, double sMinorAxis) {
         this.centerPoint = centerPoint;
@@ -61,62 +61,31 @@ public class Ellipse implements Figure {
     }
 
     @Override
-    public Figure rotateFigure() {
-        return new Ellipse(getCenterPoint(), getsMinorAxis(), getsMayorAxis());
+    public void rotateFigure() {
+        double aux = sMinorAxis;
+        sMinorAxis = sMayorAxis;
+        sMayorAxis = aux;
     }
 
     @Override
-    public Figure flipHorizontally() {
-        Point newCenter = new Point(getCenterPoint().getX() + getsMayorAxis(), getCenterPoint().getY());
-        return new Ellipse(newCenter, getsMayorAxis(), getsMinorAxis());
+    public void flipHorizontally() {
+        centerPoint = new Point(getCenterPoint().getX() + getsMayorAxis(), getCenterPoint().getY());
     }
 
     @Override
-    public Figure flipVertically() {
-        Point newCenter = new Point(getCenterPoint().getX(), getCenterPoint().getY() + getsMinorAxis());
-        return new Ellipse(newCenter, getsMayorAxis(), getsMinorAxis());
+    public void flipVertically() {
+        centerPoint = new Point(getCenterPoint().getX(), getCenterPoint().getY() + getsMinorAxis());
     }
 
     @Override
-    public Figure scaleFigure(double factor) {
-        return new Ellipse(getCenterPoint(), getsMayorAxis() * factor, getsMinorAxis() * factor);
-    }
-
-    @Override
-    public void applyShadow(GraphicsContext gc) {
-        gc.setFill(Color.GRAY);
-        gc.fillOval(getCenterPoint().getX() - getsMayorAxis() / 2 + 10.0,
-                getCenterPoint().getY() - getsMinorAxis() / 2 + 10.0, getsMayorAxis(), getsMinorAxis());
-    }
-
-    @Override
-    public void applyGradient(GraphicsContext gc, Color fillColor) {
-        RadialGradient radialGradient = new RadialGradient(0, 0, 0.5, 0.5, 0.5, true,
-                CycleMethod.NO_CYCLE,
-                new Stop(0, fillColor),
-                new Stop(1, fillColor.invert()));
-        gc.setFill(radialGradient);
-    }
-
-    @Override
-    public void applyBevel(GraphicsContext gc) {
-        double arcX = getCenterPoint().getX() - getsMayorAxis();
-        double arcY = getCenterPoint().getY() - getsMinorAxis();
-        gc.setLineWidth(10);
-        gc.setStroke(Color.LIGHTGRAY);
-        gc.strokeArc(arcX, arcY, getsMayorAxis(), getsMinorAxis(), 45, 180, ArcType.OPEN);
-        gc.setStroke(Color.BLACK);
-        gc.strokeArc(arcX, arcY, getsMayorAxis(), getsMinorAxis(), 225, 180, ArcType.OPEN);
-    }
-
-    @Override
-    public void drawFigure(GraphicsContext gc) {
-        gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
-        gc.strokeOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
+    public void scaleFigure(double factor) {
+        sMayorAxis *= factor;
+        sMinorAxis *= factor;
     }
 
     @Override
     public void moveFigure(double diffX, double diffY) {
         centerPoint.movePoint(diffX, diffY);
     }
+
 }
