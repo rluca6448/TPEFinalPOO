@@ -31,6 +31,8 @@ public interface RectangleFrontInterface extends FigureFront{
                 new Stop(0, getColor()),
                 new Stop(1, getColor().invert()));
         gc.setFill(linearGradient);
+        gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
+                Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
     }
 
 

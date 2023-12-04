@@ -103,13 +103,14 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
     public EffectState stateShadow(){
         boolean oneShadowed = false;
         boolean oneUnShadowed = false;
+        boolean oneUndetermined = false;
         for (E figure : this) {
-            if (figure.stateShadow() == EffectState.TRUE){
-                oneShadowed = true;
-            } else {
-                oneUnShadowed = true;
+            switch (figure.stateShadow()){
+                case TRUE -> {oneShadowed = true;}
+                case FALSE -> {oneUnShadowed = true;}
+                case UNDETERMINED -> {oneUndetermined = true;}
             }
-            if (oneShadowed && oneUnShadowed){
+            if ((oneShadowed && oneUnShadowed) || oneUndetermined){
                 //todo
                 System.out.println("undetermined");
                 return EffectState.UNDETERMINED;
@@ -135,13 +136,16 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
     public EffectState stateGradient(){
         boolean oneGradiented = false;
         boolean oneUnGradiented = false;
+        boolean oneUndetermined = false;
         for (E figure : this) {
-            if (figure.stateGradient() == EffectState.TRUE){
-                oneGradiented = true;
-            } else {
-                oneUnGradiented = true;
+            switch (figure.stateGradient()){
+                case TRUE -> {oneGradiented = true;}
+                case FALSE -> {oneUnGradiented = true;}
+                case UNDETERMINED -> {oneUndetermined = true;}
             }
-            if (oneGradiented && oneUnGradiented){
+            if ((oneGradiented && oneUnGradiented) || oneUndetermined){
+                //todo
+                System.out.println("undetermined");
                 return EffectState.UNDETERMINED;
             }
         }
@@ -161,13 +165,16 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
     public EffectState stateBevel(){
         boolean oneBeveled = false;
         boolean oneUnBeveled = false;
+        boolean oneUndetermined = false;
         for (E figure : this) {
-            if (figure.stateBevel() == EffectState.TRUE){
-                oneBeveled = true;
-            } else {
-                oneUnBeveled = true;
+            switch (figure.stateBevel()){
+                case TRUE -> {oneBeveled = true;}
+                case FALSE -> {oneUnBeveled = true;}
+                case UNDETERMINED -> {oneUndetermined = true;}
             }
-            if (oneBeveled && oneUnBeveled){
+            if ((oneBeveled && oneUnBeveled) || oneUndetermined){
+                //todo
+                System.out.println("undetermined");
                 return EffectState.UNDETERMINED;
             }
         }
@@ -186,6 +193,7 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
     public Color getColor() {
         return Color.YELLOW;
     }
+    //la función getColor nunca se usa; solo está implementada porque lo pide la interface
 
 //    public boolean contains(E figure) {
 //        return figures.contains(figure);

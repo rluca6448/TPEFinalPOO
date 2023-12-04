@@ -64,9 +64,9 @@ public class PaintPane extends BorderPane {
     public PaintPane(CanvasState<FigureFront> canvasState, StatusPane statusPane) {
         this.canvasState = canvasState;
         this.statusPane = statusPane;
-        shadowButton.setAllowIndeterminate(true);
-        gradientButton.setAllowIndeterminate(true);
-        beveledButton.setAllowIndeterminate(true);
+        shadowButton.setAllowIndeterminate(false);
+        gradientButton.setAllowIndeterminate(false);
+        beveledButton.setAllowIndeterminate(false);
 
         ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton,
                 groupButton, ungroupButton,
@@ -110,26 +110,52 @@ public class PaintPane extends BorderPane {
             }
             redrawCanvas();
         });
-
-        gradientButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
+        gradientButton.setOnAction(event -> {
+            if (gradientButton.isSelected()){
                 for (FigureFront figure : selectedFigures.getFigures()) {
-                    figure.applyGradient(gc);
+                    figure.addGradient();
                 }
-            } else {
-                redrawCanvas();
             }
+            else {
+                for (FigureFront figure : selectedFigures.getFigures()) {
+                    figure.deleteGradient();
+                }
+            }
+            redrawCanvas();
+        });
+        beveledButton.setOnAction(event -> {
+            if (beveledButton.isSelected()){
+                for (FigureFront figure : selectedFigures.getFigures()) {
+                    figure.addBevel();
+                }
+            }
+            else {
+                for (FigureFront figure : selectedFigures.getFigures()) {
+                    figure.deleteBevel();
+                }
+            }
+            redrawCanvas();
         });
 
-        beveledButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
-                for (FigureFront figure : selectedFigures.getFigures()) {
-                    figure.applyBevel(gc);
-                }
-            } else {
-                redrawCanvas();
-            }
-        });
+//        gradientButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+//            if (newValue) {
+//                for (FigureFront figure : selectedFigures.getFigures()) {
+//                    figure.applyGradient(gc);
+//                }
+//            } else {
+//                redrawCanvas();
+//            }
+//        });
+//
+//        beveledButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
+//            if (newValue) {
+//                for (FigureFront figure : selectedFigures.getFigures()) {
+//                    figure.applyBevel(gc);
+//                }
+//            } else {
+//                redrawCanvas();
+//            }
+//        });
 
         HBox checkBoxesBox = new HBox(10);
         Label checkBoxesLabel = new Label("Efectos: ");
@@ -281,6 +307,27 @@ public class PaintPane extends BorderPane {
         });
         //todo que se actualice al primer clic
         canvas.setOnMouseClicked(event -> {
+
+            if (selectionButton.isSelected()) {
+                Point eventPoint = new Point(event.getX(), event.getY());
+                boolean found = false;
+                StringBuilder label = new StringBuilder("Se seleccionó: ");
+                for (FigureFront figure : canvasState.figures()) {
+                    if (figure.isWithin(startPoint, eventPoint) || figure.figureBelongs(eventPoint)) {
+                        selectedFigures.add(figure);
+                        found = true;
+                        label.append(figure).append(" ");
+                    }
+                }
+                if (found) {
+
+                    statusPane.updateStatus(label.toString());
+                } else {
+                    selectedFigures = new ComplexFigureFront();
+                    statusPane.updateStatus("Ninguna figura encontrada");
+                }
+                redrawCanvas();
+            }
             switch (selectedFigures.stateShadow()){
                 case TRUE -> {
                     shadowButton.setIndeterminate(false);
@@ -307,26 +354,6 @@ public class PaintPane extends BorderPane {
                     beveledButton.setIndeterminate(false);
                     beveledButton.setSelected(false);}
                 case UNDETERMINED -> beveledButton.setIndeterminate(true);
-            }
-            if (selectionButton.isSelected()) {
-                Point eventPoint = new Point(event.getX(), event.getY());
-                boolean found = false;
-                StringBuilder label = new StringBuilder("Se seleccionó: ");
-                for (FigureFront figure : canvasState.figures()) {
-                    if (figure.isWithin(startPoint, eventPoint) || figure.figureBelongs(eventPoint)) {
-                        selectedFigures.add(figure);
-                        found = true;
-                        label.append(figure).append(" ");
-                    }
-                }
-                if (found) {
-
-                    statusPane.updateStatus(label.toString());
-                } else {
-                    selectedFigures = new ComplexFigureFront();
-                    statusPane.updateStatus("Ninguna figura encontrada");
-                }
-                redrawCanvas();
             }
         });
 

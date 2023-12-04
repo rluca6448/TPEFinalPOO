@@ -32,6 +32,7 @@ public interface EllipseFrontInterface extends FigureFront {
                 new Stop(0, getColor()),
                 new Stop(1, getColor().invert()));
         gc.setFill(radialGradient);
+        gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
     }
 
 
