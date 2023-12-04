@@ -1,6 +1,11 @@
 package src.backend.model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.ArcType;
 
 public class Ellipse implements Figure {
 
@@ -53,6 +58,55 @@ public class Ellipse implements Figure {
                 getCenterPoint().getY() + getsMinorAxis() / 2 <= bottomRight.getY() &&
                 getCenterPoint().getY() - getsMinorAxis() / 2 <= bottomRight.getY() &&
                 getCenterPoint().getY() - getsMinorAxis() / 2 >= topLeft.getY();
+    }
+
+    @Override
+    public Figure rotateFigure() {
+        return new Ellipse(getCenterPoint(), getsMinorAxis(), getsMayorAxis());
+    }
+
+    @Override
+    public Figure flipHorizontally() {
+        Point newCenter = new Point(getCenterPoint().getX() + getsMayorAxis(), getCenterPoint().getY());
+        return new Ellipse(newCenter, getsMayorAxis(), getsMinorAxis());
+    }
+
+    @Override
+    public Figure flipVertically() {
+        Point newCenter = new Point(getCenterPoint().getX(), getCenterPoint().getY() + getsMinorAxis());
+        return new Ellipse(newCenter, getsMayorAxis(), getsMinorAxis());
+    }
+
+    @Override
+    public Figure scaleFigure(double factor) {
+        return new Ellipse(getCenterPoint(), getsMayorAxis() * factor, getsMinorAxis() * factor);
+    }
+
+    @Override
+    public void applyShadow(GraphicsContext gc) {
+        gc.setFill(Color.GRAY);
+        gc.fillOval(getCenterPoint().getX() - getsMayorAxis() / 2 + 10.0,
+                getCenterPoint().getY() - getsMinorAxis() / 2 + 10.0, getsMayorAxis(), getsMinorAxis());
+    }
+
+    @Override
+    public void applyGradient(GraphicsContext gc, Color fillColor) {
+        RadialGradient radialGradient = new RadialGradient(0, 0, 0.5, 0.5, 0.5, true,
+                CycleMethod.NO_CYCLE,
+                new Stop(0, fillColor),
+                new Stop(1, fillColor.invert()));
+        gc.setFill(radialGradient);
+    }
+
+    @Override
+    public void applyBevel(GraphicsContext gc) {
+        double arcX = getCenterPoint().getX() - getsMayorAxis();
+        double arcY = getCenterPoint().getY() - getsMinorAxis();
+        gc.setLineWidth(10);
+        gc.setStroke(Color.LIGHTGRAY);
+        gc.strokeArc(arcX, arcY, getsMayorAxis(), getsMinorAxis(), 45, 180, ArcType.OPEN);
+        gc.setStroke(Color.BLACK);
+        gc.strokeArc(arcX, arcY, getsMayorAxis(), getsMinorAxis(), 225, 180, ArcType.OPEN);
     }
 
     @Override

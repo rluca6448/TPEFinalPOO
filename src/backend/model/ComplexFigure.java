@@ -1,6 +1,7 @@
 package src.backend.model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,12 +51,68 @@ public class ComplexFigure implements Figure {
     @Override
     public boolean isWithin(Point topLeft, Point bottomRight) {
         for (Figure figure : figures) {
-            System.out.println(figure.toString() + figure.isWithin(topLeft, bottomRight));
             if (!figure.isWithin(topLeft, bottomRight)) {
                 return false;
             }
         }
         return true;
+    }
+
+    @Override
+    public Figure rotateFigure() {
+        Set<Figure> toReturn = new HashSet<>();
+        for (Figure figure : figures) {
+            toReturn.add(figure.rotateFigure());
+        }
+        return new ComplexFigure(toReturn);
+    }
+
+    @Override
+    public Figure flipHorizontally() {
+        Set<Figure> toReturn = new HashSet<>();
+        for (Figure figure : figures) {
+            toReturn.add(figure.flipHorizontally());
+        }
+        return new ComplexFigure(toReturn);
+    }
+
+    @Override
+    public Figure flipVertically() {
+        Set<Figure> toReturn = new HashSet<>();
+        for (Figure figure : figures) {
+            toReturn.add(figure.flipVertically());
+        }
+        return new ComplexFigure(toReturn);
+    }
+
+    @Override
+    public Figure scaleFigure(double factor) {
+        Set<Figure> toReturn = new HashSet<>();
+        for (Figure figure : figures) {
+            toReturn.add(figure.scaleFigure(factor));
+        }
+        return new ComplexFigure(toReturn);
+    }
+
+    @Override
+    public void applyShadow(GraphicsContext gc) {
+        for (Figure figure : figures) {
+            figure.applyShadow(gc);
+        }
+    }
+
+    @Override
+    public void applyGradient(GraphicsContext gc, Color fillColor) {
+        for (Figure figure : figures) {
+            figure.applyGradient(gc, fillColor);
+        }
+    }
+
+    @Override
+    public void applyBevel(GraphicsContext gc) {
+        for (Figure figure : figures) {
+            figure.applyBevel(gc);
+        }
     }
 
     @Override
