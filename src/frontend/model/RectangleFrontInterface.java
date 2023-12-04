@@ -49,6 +49,7 @@ public interface RectangleFrontInterface extends FigureFront{
         gc.setStroke(Color.BLACK);
         gc.strokeLine(x + width, y, x + width, y + height);
         gc.strokeLine(x, y + height, x + width, y + height);
+        gc.setLineWidth(1);
     }
 
     default void drawFigure(GraphicsContext gc) {
