@@ -78,7 +78,7 @@ public class PaintPane extends BorderPane {
         buttonsBox.getChildren().addAll(toolsArr);
         buttonsBox.getChildren().add(fillColorPicker);
         buttonsBox.setPadding(new Insets(5));
-        //todo usar enum Color
+        //todo usar enum Color (setStyle recibe una string, como se podria hacer eso?)
         buttonsBox.setStyle("-fx-background-color: #999");
         buttonsBox.setPrefWidth(100);
 
@@ -304,7 +304,7 @@ public class PaintPane extends BorderPane {
                 statusPane.updateStatus(eventPoint.toString());
             }
         });
-        //todo que se actualice al primer clic
+
         canvas.setOnMouseClicked(event -> {
 
             if (selectionButton.isSelected()) {

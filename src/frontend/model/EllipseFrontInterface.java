@@ -15,7 +15,6 @@ public interface EllipseFrontInterface extends FigureFront {
     double getsMayorAxis();
     double getsMinorAxis();
 
-    //todo que la sombra salga atras
     default void applyShadow(GraphicsContext gc) {
         if (stateShadow() != EffectState.TRUE) return;
         gc.setFill(Color.GRAY);
@@ -24,8 +23,7 @@ public interface EllipseFrontInterface extends FigureFront {
         gc.setFill(FrontColor.RGBtoColor(getColor()));
         drawFigure(gc);
     }
-
-
+    
     default void applyGradient(GraphicsContext gc) {
         if (stateGradient() != EffectState.TRUE) return;
         RadialGradient radialGradient = new RadialGradient(0, 0, 0.5, 0.5, 0.5, true,

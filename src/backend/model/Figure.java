@@ -20,8 +20,6 @@ public interface Figure {
 
     void scaleFigure(double factor);
 
-    //todo que en lugar de usar el color de javafx guarde el hexa del color y lo vaya convirtiendo el front a color de javafx
-    //todo que el color se pase como param del constructor
     void setFillColor(RGBColor RGBColor);
 
     RGBColor getColor();
