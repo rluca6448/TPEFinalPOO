@@ -3,9 +3,13 @@ package backend.model;
 import backend.EffectState;
 import backend.RGBColor;
 
-public abstract class FigureImpl implements Figure {
+import java.util.HashSet;
+import java.util.Set;
+
+public abstract class FigureImpl<E extends Figure> implements FigureWithFrontProperties<E> {
 
     private boolean shadow, gradient, bevel;
+    private E figure;
 
     private final RGBColor color;
 
@@ -14,6 +18,22 @@ public abstract class FigureImpl implements Figure {
         shadow = false;
         gradient = false;
         bevel = false;
+    }
+    public void setFigure(E figure){
+        this.figure = figure;
+    }
+    public boolean isComplex(){
+        return false;
+    }
+    public Set<Figure> getFigures2(){
+        Set<Figure> toReturn = new HashSet<>();
+        toReturn.add(this);
+        return toReturn;
+    }
+    public Set<E> getFigures(){
+        Set<E> toReturn = new HashSet<>();
+        toReturn.add(figure);
+        return toReturn;
     }
 
     public RGBColor getColor() {

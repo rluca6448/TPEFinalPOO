@@ -5,7 +5,7 @@ import backend.RGBColor;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Ellipse extends FigureImpl {
+public class Ellipse<E extends Figure> extends FigureImpl<E> {
 
     protected Point centerPoint;
     protected double sMayorAxis, sMinorAxis;

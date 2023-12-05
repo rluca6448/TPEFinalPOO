@@ -4,8 +4,9 @@ import backend.RGBColor;
 import backend.model.Point;
 import backend.model.Square;
 
-public class SquareFront extends Square implements RectangleFrontInterface {
+public class SquareFront extends Square<FigureFront> implements RectangleFrontInterface {
     public SquareFront(Point topLeft, double size, RGBColor color) {
         super(topLeft, size, color);
+        setFigure(this);
     }
 }

@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
-public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figure {
+public class ComplexFigure<E extends Figure> extends HashSet<E> implements FigureWithFrontProperties<E> {
 
     public ComplexFigure(Set<E> selectedFigures) {
         super();
@@ -20,6 +20,12 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
 
     public Set<E> getFigures() {
         return Set.copyOf(this);
+    }
+    public Set<Figure> getFigures2(){
+        return Set.copyOf(this);
+    }
+    public boolean isComplex(){
+        return true;
     }
 
 //    public boolean isEmpty(){return figures.isEmpty();}

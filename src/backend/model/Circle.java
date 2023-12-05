@@ -2,7 +2,7 @@ package backend.model;
 
 import backend.RGBColor;
 
-public class Circle extends Ellipse {
+public class Circle<E extends Figure> extends Ellipse<E> {
 
     public Circle(Point centerPoint, double radius, RGBColor color) {
         super(centerPoint, radius, radius, color);

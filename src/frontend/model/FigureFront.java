@@ -1,9 +1,12 @@
 package frontend.model;
 
 import backend.model.Figure;
+import backend.model.FigureWithFrontProperties;
 import javafx.scene.canvas.GraphicsContext;
 
-public interface FigureFront extends Figure {
+import java.util.Set;
+
+public interface FigureFront extends FigureWithFrontProperties<FigureFront> {
 
     void drawFigure(GraphicsContext gc);
 

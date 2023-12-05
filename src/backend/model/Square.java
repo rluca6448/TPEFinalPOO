@@ -2,7 +2,7 @@ package backend.model;
 
 import backend.RGBColor;
 
-public class Square extends Rectangle {
+public class Square<E extends Figure> extends Rectangle<E> {
 
     public Square(Point topLeft, double size, RGBColor color) {
         super(topLeft, new Point(topLeft.getX() + size, topLeft.getY() + size), color);

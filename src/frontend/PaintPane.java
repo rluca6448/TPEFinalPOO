@@ -227,13 +227,12 @@ public class PaintPane extends BorderPane {
 
         ungroupButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
+                //CanvasState<FigureFront> canvasState2 = new CanvasState<>();
                 for (FigureFront figure : selectedFigures.getFigures()) {
-                    if (figure instanceof ComplexFigureFront complexFigure) {
-                        for (FigureFront simpleFigure : complexFigure.getFigures()) {
-                            canvasState.addFigure(simpleFigure);
-                        }
-                        canvasState.deleteFigure(figure);
+                    for (FigureFront simpleFigure : figure.getFigures()) {
+                        canvasState.addFigure(simpleFigure);
                     }
+                    canvasState.deleteFigure(figure);
                 }
                 selectedFigures = new ComplexFigureFront();
                 redrawCanvas();
@@ -252,7 +251,7 @@ public class PaintPane extends BorderPane {
 
         flipHorizontallyButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                for (FigureFront figure : selectedFigures.getFigures()) {
+                for (Figure figure : selectedFigures.getFigures()) {
                     figure.flipHorizontally();
                 }
                 startPoint = null;
@@ -262,7 +261,7 @@ public class PaintPane extends BorderPane {
 
         flipVerticallyButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                for (FigureFront figure : selectedFigures.getFigures()) {
+                for (Figure figure : selectedFigures.getFigures()) {
                     figure.flipVertically();
                 }
                 startPoint = null;
@@ -272,7 +271,7 @@ public class PaintPane extends BorderPane {
 
         scaleButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                for (FigureFront figure : selectedFigures.getFigures()) {
+                for (Figure figure : selectedFigures.getFigures()) {
                     figure.scaleFigure(1.25);
                 }
                 startPoint = null;

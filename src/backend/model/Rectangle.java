@@ -5,7 +5,7 @@ import backend.RGBColor;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Rectangle extends FigureImpl {
+public class Rectangle<E extends Figure> extends FigureImpl<E> {
 
     private Point topLeft, bottomRight;
 
