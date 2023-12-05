@@ -48,6 +48,7 @@ public interface EllipseFrontInterface extends FigureFront {
 
 
     default void drawFigure(GraphicsContext gc) {
+        //todo: ver si se puede evitar uso excesivo de fillOval (o fillRectangle) y mejorar el resto de la función
         applyShadow(gc);
 
         gc.setFill(FrontColor.RGBtoColor(getColor()));
