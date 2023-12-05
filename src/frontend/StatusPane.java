@@ -9,8 +9,7 @@ public class StatusPane extends BorderPane {
 	private final Label statusLabel;
 
 	public StatusPane() {
-		//todo usar enum Color (setStyle recibe una string, como se podria hacer eso?)
-		setStyle("-fx-background-color: #4EBCF8");
+		setStyle("-fx-background-color: " + CYAN);
 		statusLabel = new Label("");
 		statusLabel.setAlignment(Pos.CENTER);
 		statusLabel.setStyle("-fx-font-size: 16");

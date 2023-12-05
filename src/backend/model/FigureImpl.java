@@ -4,11 +4,16 @@ import backend.EffectState;
 import backend.RGBColor;
 
 public abstract class FigureImpl implements Figure {
-    private boolean shadow, gradient, bevel;
-    private RGBColor RGBColor;
 
-    public void setFillColor(RGBColor RGBColor) {
-        this.RGBColor = RGBColor;
+    private boolean shadow, gradient, bevel;
+
+    private final RGBColor color;
+
+    protected FigureImpl(RGBColor color) {
+        this.color = color;
+        shadow = false;
+        gradient = false;
+        bevel = false;
     }
 
     public RGBColor getColor() {
