@@ -13,7 +13,7 @@ public interface RectangleFrontInterface extends FigureFront{
     Point getTopLeft();
     Point getBottomRight();
 
-    default void applyShadow(GraphicsContext gc) {
+    private void applyShadow(GraphicsContext gc) {
         if (stateShadow() != EffectState.TRUE) return;
         gc.setFill(Color.GRAY);
         gc.fillRect(getTopLeft().getX() + 10.0,
@@ -21,11 +21,10 @@ public interface RectangleFrontInterface extends FigureFront{
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()),
                 Math.abs(getTopLeft().getY() - getBottomRight().getY()));
         gc.setFill(FrontColor.RGBtoColor(getColor()));
-        drawFigure(gc);
     }
 
 
-    default void applyGradient(GraphicsContext gc) {
+    private void applyGradient(GraphicsContext gc) {
         if (stateGradient() != EffectState.TRUE) return;
         LinearGradient linearGradient = new LinearGradient(0, 0, 1, 0, true,
                 CycleMethod.NO_CYCLE,
@@ -37,7 +36,7 @@ public interface RectangleFrontInterface extends FigureFront{
     }
 
 
-    default void applyBevel(GraphicsContext gc) {
+    private void applyBevel(GraphicsContext gc) {
         if (stateBevel() != EffectState.TRUE) return;
         double x = getTopLeft().getX();
         double y = getTopLeft().getY();
@@ -51,14 +50,20 @@ public interface RectangleFrontInterface extends FigureFront{
         gc.strokeLine(x + width, y, x + width, y + height);
         gc.strokeLine(x, y + height, x + width, y + height);
         gc.setLineWidth(1);
-        drawFigure(gc);
     }
 
     default void drawFigure(GraphicsContext gc) {
+        applyShadow(gc);
+
         gc.setFill(FrontColor.RGBtoColor(getColor()));
         gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
+
+        applyGradient(gc);
+
         gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(),
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
+
+        applyBevel(gc);
     }
 }

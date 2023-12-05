@@ -131,7 +131,6 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
         }
     }
 
-    //todo modularizar en un getState privado que reciba la funcion lambda de cual state verificar
     public EffectState stateGradient() {
         return getState(Figure::stateGradient);
     }
@@ -155,12 +154,6 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
     public void deleteBevel() {
         for (E figure : this) {
             figure.deleteBevel();
-        }
-    }
-
-    public void setFillColor(RGBColor RGBColor) {
-        for (E figure : this) {
-            figure.setFillColor(RGBColor);
         }
     }
 

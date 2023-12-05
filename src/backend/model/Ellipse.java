@@ -1,11 +1,17 @@
 package backend.model;
 
+import backend.RGBColor;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class Ellipse extends FigureImpl {
 
     protected Point centerPoint;
     protected double sMayorAxis, sMinorAxis;
 
-    public Ellipse(Point centerPoint, double sMayorAxis, double sMinorAxis) {
+    public Ellipse(Point centerPoint, double sMayorAxis, double sMinorAxis, RGBColor color) {
+        super(color);
         this.centerPoint = centerPoint;
         this.sMayorAxis = sMayorAxis;
         this.sMinorAxis = sMinorAxis;

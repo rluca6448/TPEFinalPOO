@@ -19,24 +19,4 @@ public class ComplexFigureFront extends ComplexFigure<FigureFront> implements Fi
             figure.drawFigure(gc);
         }
     }
-    @Override
-    public void applyShadow(GraphicsContext gc) {
-        for (FigureFront figure : getFigures()) {
-            figure.applyShadow(gc);
-        }
-    }
-
-    @Override
-    public void applyGradient(GraphicsContext gc) {
-        for (FigureFront figure : getFigures()) {
-            figure.applyGradient(gc);
-        }
-    }
-
-    @Override
-    public void applyBevel(GraphicsContext gc) {
-        for (FigureFront figure : getFigures()) {
-            figure.applyBevel(gc);
-        }
-    }
 }

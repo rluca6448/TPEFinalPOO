@@ -1,10 +1,16 @@
 package backend.model;
 
+import backend.RGBColor;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class Rectangle extends FigureImpl {
 
     private Point topLeft, bottomRight;
 
-    public Rectangle(Point topLeft, Point bottomRight) {
+    public Rectangle(Point topLeft, Point bottomRight, RGBColor color) {
+        super(color);
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
     }

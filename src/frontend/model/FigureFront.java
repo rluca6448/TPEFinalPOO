@@ -7,10 +7,10 @@ public interface FigureFront extends Figure {
 
     void drawFigure(GraphicsContext gc);
 
-    void applyShadow(GraphicsContext gc);
+    //void applyShadow(GraphicsContext gc);
 
-    void applyGradient(GraphicsContext gc);
+    //void applyGradient(GraphicsContext gc);
 
-    void applyBevel(GraphicsContext gc);
+    //void applyBevel(GraphicsContext gc);
 
 }

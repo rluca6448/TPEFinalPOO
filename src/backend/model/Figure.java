@@ -3,6 +3,8 @@ package backend.model;
 import backend.EffectState;
 import backend.RGBColor;
 
+import java.util.Set;
+
 public interface Figure {
 
     boolean figureBelongs(Point eventPoint);
@@ -19,7 +21,6 @@ public interface Figure {
 
     void scaleFigure(double factor);
 
-    void setFillColor(RGBColor RGBColor);
 
     RGBColor getColor();
 

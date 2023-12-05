@@ -81,8 +81,7 @@ public class PaintPane extends BorderPane {
         buttonsBox.getChildren().addAll(toolsArr);
         buttonsBox.getChildren().add(fillColorPicker);
         buttonsBox.setPadding(new Insets(5));
-        //todo usar enum Color (setStyle recibe una string, como se podria hacer eso?)
-        buttonsBox.setStyle("-fx-background-color: #999");
+        buttonsBox.setStyle("-fx-background-color: " + GRAY);
         buttonsBox.setPrefWidth(100);
 
         CheckBox[] styleArr = {shadowButton, gradientButton, beveledButton};
@@ -386,9 +385,6 @@ public class PaintPane extends BorderPane {
                 gc.setStroke(lineColor);
             }
             figure.drawFigure(gc);
-            figure.applyShadow(gc);
-            figure.applyGradient(gc);
-            figure.applyBevel(gc);
         }
     }
 }
