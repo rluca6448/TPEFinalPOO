@@ -8,6 +8,8 @@ public class StatusPane extends BorderPane {
 
 	private final Label statusLabel;
 
+	private final static String CYAN = "#4EBCF8";
+
 	public StatusPane() {
 		setStyle("-fx-background-color: " + CYAN);
 		statusLabel = new Label("");

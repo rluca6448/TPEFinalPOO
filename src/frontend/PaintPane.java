@@ -56,6 +56,9 @@ public class PaintPane extends BorderPane {
     // StatusBar
     StatusPane statusPane;
 
+    //Color background gris
+    private static final String GRAY = "#999";
+
     // Colores de relleno de cada figura
 
     public PaintPane(CanvasState<FigureFront> canvasState, StatusPane statusPane) {
@@ -156,7 +159,7 @@ public class PaintPane extends BorderPane {
 
         HBox checkBoxesBox = new HBox(10);
         Label checkBoxesLabel = new Label("Efectos: ");
-        checkBoxesBox.setStyle("-fx-background-color: #999");
+        checkBoxesBox.setStyle("-fx-background-color: "+GRAY);
         checkBoxesBox.setPrefWidth(100);
         checkBoxesBox.setPadding(new Insets(5));
         checkBoxesBox.getChildren().add(checkBoxesLabel);
@@ -177,25 +180,25 @@ public class PaintPane extends BorderPane {
                 return;
             }
             FigureFront newFigure;
+            RGBColor color = new RGBColor(fillColorPicker.getValue().getRed(),
+                    fillColorPicker.getValue().getGreen(),
+                    fillColorPicker.getValue().getBlue());
             if (rectangleButton.isSelected()) {
-                newFigure = new RectangleFront(startPoint, endPoint);
+                newFigure = new RectangleFront(startPoint, endPoint, color);
             } else if (circleButton.isSelected()) {
                 double circleRadius = Math.abs(endPoint.getX() - startPoint.getX());
-                newFigure = new CircleFront(startPoint, circleRadius);
+                newFigure = new CircleFront(startPoint, circleRadius, color);
             } else if (squareButton.isSelected()) {
                 double size = Math.abs(endPoint.getX() - startPoint.getX());
-                newFigure = new SquareFront(startPoint, size);
+                newFigure = new SquareFront(startPoint, size, color);
             } else if (ellipseButton.isSelected()) {
                 Point centerPoint = new Point(Math.abs(endPoint.getX() + startPoint.getX()) / 2, (Math.abs((endPoint.getY() + startPoint.getY())) / 2));
                 double sMayorAxis = Math.abs(endPoint.getX() - startPoint.getX());
                 double sMinorAxis = Math.abs(endPoint.getY() - startPoint.getY());
-                newFigure = new EllipseFront(centerPoint, sMayorAxis, sMinorAxis);
+                newFigure = new EllipseFront(centerPoint, sMayorAxis, sMinorAxis, color);
             } else {
                 return;
             }
-            newFigure.setFillColor(new RGBColor(fillColorPicker.getValue().getRed(),
-                    fillColorPicker.getValue().getGreen(),
-                    fillColorPicker.getValue().getBlue()));
             canvasState.addFigure(newFigure);
             startPoint = null;
             redrawCanvas();

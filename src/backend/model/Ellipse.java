@@ -81,4 +81,5 @@ public class Ellipse extends FigureImpl {
         centerPoint.movePoint(diffX, diffY);
     }
 
+
 }

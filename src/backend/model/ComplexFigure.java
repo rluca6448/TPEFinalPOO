@@ -5,6 +5,7 @@ import backend.RGBColor;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figure {
 
@@ -97,28 +98,26 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
         }
     }
 
-    //todo modularizar en un getState privado que reciba la funcion lambda de cual state verificar
-    public EffectState stateShadow() {
-        boolean oneShadowed = false;
-        boolean oneUnShadowed = false;
+    private EffectState getState(Function<E, EffectState> stateFunction) {
+        boolean oneTrue = false;
+        boolean oneFalse = false;
         boolean oneUndetermined = false;
         for (E figure : this) {
-            switch (figure.stateShadow()) {
-                case TRUE -> oneShadowed = true;
-                case FALSE -> oneUnShadowed = true;
+            switch (stateFunction.apply(figure)) {
+                case TRUE -> oneTrue = true;
+                case FALSE -> oneFalse = true;
                 case UNDETERMINED -> oneUndetermined = true;
             }
-            if ((oneShadowed && oneUnShadowed) || oneUndetermined) {
-                //todo
-                System.out.println("undetermined");
+            if ((oneTrue && oneFalse) || oneUndetermined) {
                 return EffectState.UNDETERMINED;
             }
         }
-        //todo
-        System.out.println(oneShadowed ? "true" : "false");
-        return oneShadowed ? EffectState.TRUE : EffectState.FALSE;
+        return oneTrue ? EffectState.TRUE : EffectState.FALSE;
     }
-    //todo: acordarse del caso donde el checkbox es indeterminado
+    public EffectState stateShadow() {
+
+        return getState(Figure::stateShadow);
+    }
 
     public void deleteShadow() {
         for (E figure : this) {
@@ -134,22 +133,7 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
 
     //todo modularizar en un getState privado que reciba la funcion lambda de cual state verificar
     public EffectState stateGradient() {
-        boolean oneGradiented = false;
-        boolean oneUnGradiented = false;
-        boolean oneUndetermined = false;
-        for (E figure : this) {
-            switch (figure.stateGradient()) {
-                case TRUE -> oneGradiented = true;
-                case FALSE -> oneUnGradiented = true;
-                case UNDETERMINED -> oneUndetermined = true;
-            }
-            if ((oneGradiented && oneUnGradiented) || oneUndetermined) {
-                //todo
-                System.out.println("undetermined");
-                return EffectState.UNDETERMINED;
-            }
-        }
-        return oneGradiented ? EffectState.TRUE : EffectState.FALSE;
+        return getState(Figure::stateGradient);
     }
 
     public void deleteGradient() {
@@ -164,24 +148,8 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
         }
     }
 
-    //todo modularizar en un getState privado que reciba la funcion lambda de cual state verificar
     public EffectState stateBevel() {
-        boolean oneBeveled = false;
-        boolean oneUnBeveled = false;
-        boolean oneUndetermined = false;
-        for (E figure : this) {
-            switch (figure.stateBevel()) {
-                case TRUE -> oneBeveled = true;
-                case FALSE -> oneUnBeveled = true;
-                case UNDETERMINED -> oneUndetermined = true;
-            }
-            if ((oneBeveled && oneUnBeveled) || oneUndetermined) {
-                //todo
-                System.out.println("undetermined");
-                return EffectState.UNDETERMINED;
-            }
-        }
-        return oneBeveled ? EffectState.TRUE : EffectState.FALSE;
+        return getState(Figure::stateBevel);
     }
 
     public void deleteBevel() {

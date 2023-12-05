@@ -7,7 +7,6 @@ public interface Figure {
 
     boolean figureBelongs(Point eventPoint);
 
-
     void moveFigure(double diffX, double diffY);
 
     boolean isWithin(Point topLeft, Point bottomRight);

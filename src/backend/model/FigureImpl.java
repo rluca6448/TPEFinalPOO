@@ -17,7 +17,7 @@ public abstract class FigureImpl implements Figure {
     }
 
     public RGBColor getColor() {
-        return RGBColor;
+        return color;
     }
 
     public void addShadow() {
@@ -25,8 +25,6 @@ public abstract class FigureImpl implements Figure {
     }
 
     public EffectState stateShadow() {
-        //todo
-        System.out.println(shadow ? "true" : "false");
         return shadow ? EffectState.TRUE : EffectState.FALSE;
     }
 

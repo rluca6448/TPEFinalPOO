@@ -1,5 +1,6 @@
 package frontend.model;
 
+import backend.RGBColor;
 import backend.model.Point;
 import backend.model.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
@@ -9,8 +10,8 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 
 public class RectangleFront extends Rectangle implements RectangleFrontInterface {
-    public RectangleFront(Point topLeft, Point bottomRight) {
-        super(topLeft, bottomRight);
+    public RectangleFront(Point topLeft, Point bottomRight, RGBColor color) {
+        super(topLeft, bottomRight, color);
     }
 
 }

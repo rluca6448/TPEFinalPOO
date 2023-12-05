@@ -1,9 +1,11 @@
 package backend.model;
 
+import backend.RGBColor;
+
 public class Circle extends Ellipse {
 
-    public Circle(Point centerPoint, double radius) {
-        super(centerPoint, radius, radius);
+    public Circle(Point centerPoint, double radius, RGBColor color) {
+        super(centerPoint, radius, radius, color);
     }
 
     @Override
