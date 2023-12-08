@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ComplexFigureFront extends ComplexFigure<FigureFront> implements FigureFront {
-    public ComplexFigureFront(Set<FigureFront> selectedFigures) {
+    public ComplexFigureFront(List<FigureFront> selectedFigures) {
         super(selectedFigures);
     }
     public ComplexFigureFront(){
@@ -16,7 +16,8 @@ public class ComplexFigureFront extends ComplexFigure<FigureFront> implements Fi
     }
     @Override
     public void drawFigure(GraphicsContext gc) {
-        for (FigureFront figure : getFigures()) {
+        List<FigureFront> list = getFigures();
+        for (FigureFront figure : list) {
             figure.drawFigure(gc);
         }
     }

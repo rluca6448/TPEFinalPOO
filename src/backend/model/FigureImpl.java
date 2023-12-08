@@ -3,15 +3,22 @@ package backend.model;
 import backend.EffectState;
 import backend.RGBColor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class FigureImpl implements Figure {
 
     private boolean shadow, gradient, bevel;
-    private E figure;
+//    private E figure;
 
     private final RGBColor color;
+
+    //todo consultar casteo
+    public <T extends Figure> List<T> getFigures(){
+        List<T> toReturn = new ArrayList<>();
+        toReturn.add((T) this);
+        return toReturn;
+    }
 
     protected FigureImpl(RGBColor color) {
         this.color = color;
@@ -19,22 +26,17 @@ public abstract class FigureImpl implements Figure {
         gradient = false;
         bevel = false;
     }
-    public void setFigure(E figure){
-        this.figure = figure;
-    }
-    public boolean isComplex(){
-        return false;
-    }
-    public Set<Figure> getFigures2(){
-        Set<Figure> toReturn = new HashSet<>();
-        toReturn.add(this);
-        return toReturn;
-    }
-    public Set<E> getFigures(){
-        Set<E> toReturn = new HashSet<>();
-        toReturn.add(figure);
-        return toReturn;
-    }
+//    public void setFigure(E figure){
+//        this.figure = figure;
+//    }
+//    public boolean isComplex(){
+//        return false;
+//    }
+//    public Set<Figure> getFigures2(){
+//        Set<Figure> toReturn = new HashSet<>();
+//        toReturn.add(this);
+//        return toReturn;
+//    }
 
     public RGBColor getColor() {
         return color;

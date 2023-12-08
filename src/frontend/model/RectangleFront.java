@@ -9,10 +9,9 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 
-public class RectangleFront extends Rectangle<FigureFront> implements RectangleFrontInterface {
+public class RectangleFront extends Rectangle implements RectangleFrontInterface {
     public RectangleFront(Point topLeft, Point bottomRight, RGBColor color) {
         super(topLeft, bottomRight, color);
-        setFigure(this);
     }
 
 }

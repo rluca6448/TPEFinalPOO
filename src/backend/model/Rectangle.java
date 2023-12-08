@@ -2,8 +2,11 @@ package backend.model;
 
 import backend.RGBColor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 public class Rectangle extends FigureImpl {
 
@@ -13,6 +16,15 @@ public class Rectangle extends FigureImpl {
         super(color);
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof Rectangle aux){
+            return topLeft.equals(aux.getTopLeft()) && bottomRight.equals(aux.getBottomRight());
+        }
+        return false;
     }
 
     public Point getTopLeft() {

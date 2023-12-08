@@ -11,10 +11,9 @@ import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.ArcType;
 
-public class EllipseFront extends Ellipse<FigureFront> implements EllipseFrontInterface {
+public class EllipseFront extends Ellipse implements EllipseFrontInterface {
     public EllipseFront(Point centerPoint, double sMayorAxis, double sMinorAxis, backend.RGBColor color) {
         super(centerPoint, sMayorAxis, sMinorAxis, color);
-        setFigure(this);
     }
 
 }

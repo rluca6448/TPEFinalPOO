@@ -3,13 +3,12 @@ package backend.model;
 import backend.EffectState;
 import backend.RGBColor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
-public class ComplexFigure<E extends Figure> extends HashSet<E> implements FigureWithFrontProperties<E> {
+public class ComplexFigure<E extends Figure> extends ArrayList<E> implements Figure {
 
-    public ComplexFigure(Set<E> selectedFigures) {
+    public ComplexFigure(Collection<E> selectedFigures) {
         super();
         addAll(selectedFigures);
     }
@@ -18,14 +17,16 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
         super();
     }
 
-    public Set<E> getFigures() {
-        return Set.copyOf(this);
-    }
-    public Set<Figure> getFigures2(){
-        return Set.copyOf(this);
-    }
-    public boolean isComplex(){
-        return true;
+//    public List<E> getFigures() {
+//        return List.copyOf(this);
+//    }
+
+    public <T extends Figure> List<T> getFigures(){
+        List<T> toReturn = new ArrayList<>();
+        for (Figure figure : this){
+            toReturn.addAll(figure.getFigures());
+        }
+        return toReturn;
     }
 
 //    public boolean isEmpty(){return figures.isEmpty();}
@@ -166,6 +167,31 @@ public class ComplexFigure<E extends Figure> extends HashSet<E> implements Figur
     public RGBColor getColor() {
         return null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o instanceof ComplexFigure<?> aux) {
+
+            Iterator<E> it1 = this.iterator();
+            Iterator<?> it2 = aux.iterator();
+
+            while (it1.hasNext() && it2.hasNext()) {
+                E figure1 = it1.next();
+                Object figure2 = it2.next();
+
+                if (figure1 != null && !figure1.equals(figure2)) {
+                    return false;
+                } else if (figure1 == null && figure2 != null) {
+                    return false;
+                }
+            }
+
+            return !it1.hasNext() && !it2.hasNext();
+        }
+        return false;
+    }
+
     //la función getColor nunca se usa; solo está implementada porque lo pide la interface
 
 //    public boolean contains(E figure) {

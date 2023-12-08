@@ -3,7 +3,8 @@ package backend.model;
 import backend.EffectState;
 import backend.RGBColor;
 
-import java.util.Set;
+import java.util.List;
+
 
 public interface Figure {
 //    boolean isComplex();
