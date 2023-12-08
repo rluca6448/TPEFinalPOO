@@ -4,6 +4,7 @@ import backend.model.ComplexFigure;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.util.List;
 import java.util.Set;
 
 public class ComplexFigureFront extends ComplexFigure<FigureFront> implements FigureFront {

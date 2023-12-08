@@ -1,7 +1,6 @@
 package frontend.model;
 
 import backend.model.Figure;
-import backend.model.FigureWithFrontProperties;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Set;

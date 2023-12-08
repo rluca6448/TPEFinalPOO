@@ -205,7 +205,8 @@ public class PaintPane extends BorderPane {
 
         deleteButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                for (FigureFront figure : selectedFigures.getFigures()) {
+                List<FigureFront> list = selectedFigures.getFigures();
+                for (FigureFront figure : list) {
                     canvasState.deleteFigure(figure);
                 }
                 selectedFigures = new ComplexFigureFront();
