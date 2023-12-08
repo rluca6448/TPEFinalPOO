@@ -5,7 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.Set;
 
-public interface FigureFront extends FigureWithFrontProperties<FigureFront> {
+public interface FigureFront extends Figure {
 
     void drawFigure(GraphicsContext gc);
 

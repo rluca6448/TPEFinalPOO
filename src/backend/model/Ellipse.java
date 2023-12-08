@@ -16,6 +16,13 @@ public class Ellipse<E extends Figure> extends FigureImpl<E> {
         this.sMayorAxis = sMayorAxis;
         this.sMinorAxis = sMinorAxis;
     }
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof Ellipse aux){
+            return centerPoint.equals(aux.getCenterPoint()) && sMayorAxis == aux.getsMayorAxis() && sMinorAxis == aux.getsMinorAxis();
+        }
+        return false;
+    }
 
     @Override
     public String toString() {

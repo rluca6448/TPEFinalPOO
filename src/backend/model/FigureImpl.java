@@ -6,7 +6,7 @@ import backend.RGBColor;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class FigureImpl<E extends Figure> implements FigureWithFrontProperties<E> {
+public abstract class FigureImpl implements Figure {
 
     private boolean shadow, gradient, bevel;
     private E figure;

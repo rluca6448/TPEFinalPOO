@@ -6,8 +6,10 @@ import backend.RGBColor;
 import java.util.Set;
 
 public interface Figure {
-    boolean isComplex();
-    Set<Figure> getFigures2();
+//    boolean isComplex();
+//    Set<Figure> getFigures2();
+//    List<E> getFigures();
+    <T extends Figure> List<T>  getFigures();
 
     boolean figureBelongs(Point eventPoint);
 
