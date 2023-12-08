@@ -214,7 +214,7 @@ public class PaintPane extends BorderPane {
                 for (FigureFront figure : list) {
                     canvasState.deleteFigure(figure);
                 }
-                selectedFigures = new ComplexFigureFront();
+                selectedFigures = new ArrayList<>();
                 redrawCanvas();
             }
         });
