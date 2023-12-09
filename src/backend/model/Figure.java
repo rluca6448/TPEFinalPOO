@@ -4,10 +4,6 @@ import backend.EffectState;
 import backend.RGBColor;
 
 public interface Figure {
-//    boolean isComplex();
-//    Set<Figure> getFigures2();
-//    List<E> getFigures();
-    <T extends Figure> List<T>  getFigures();
 
     boolean figureBelongs(Point eventPoint);
 

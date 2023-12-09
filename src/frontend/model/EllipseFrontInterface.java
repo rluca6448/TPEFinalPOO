@@ -15,6 +15,11 @@ public interface EllipseFrontInterface extends FigureFront {
     double getsMayorAxis();
     double getsMinorAxis();
 
+    private void fill(GraphicsContext gc, double offset){
+        gc.fillOval(getCenterPoint().getX() - getsMayorAxis() / 2 + offset,
+                getCenterPoint().getY() - getsMinorAxis() / 2 + offset, getsMayorAxis(), getsMinorAxis());
+    }
+
     private void applyShadow(GraphicsContext gc) {
         if (stateShadow() != EffectState.TRUE) return;
         gc.setFill(Color.GRAY);
@@ -23,7 +28,6 @@ public interface EllipseFrontInterface extends FigureFront {
     }
     
     private void applyGradient(GraphicsContext gc) {
-        if (stateGradient() != EffectState.TRUE) return;
         RadialGradient radialGradient = new RadialGradient(0, 0, 0.5, 0.5, 0.5, true,
                 CycleMethod.NO_CYCLE,
                 new Stop(0, FrontColor.RGBtoColor(getColor())),
@@ -34,7 +38,6 @@ public interface EllipseFrontInterface extends FigureFront {
 
 
     private void applyBevel(GraphicsContext gc) {
-        if (stateBevel() != EffectState.TRUE) return;
         double arcX = getCenterPoint().getX() - getsMayorAxis()/2;
         double arcY = getCenterPoint().getY() - getsMinorAxis()/2;
         gc.setLineWidth(10);

@@ -12,32 +12,32 @@ import backend.model.*;
 public interface RectangleFrontInterface extends FigureFront{
     Point getTopLeft();
     Point getBottomRight();
+    private void fill(GraphicsContext gc, double offset){
+        gc.fillRect(getTopLeft().getX() + offset,
+                getTopLeft().getY() + offset,
+                Math.abs(getTopLeft().getX() - getBottomRight().getX()),
+                Math.abs(getTopLeft().getY() - getBottomRight().getY()));
+    }
 
     private void applyShadow(GraphicsContext gc) {
         if (stateShadow() != EffectState.TRUE) return;
         gc.setFill(Color.GRAY);
-        gc.fillRect(getTopLeft().getX() + 10.0,
-                getTopLeft().getY() + 10.0,
-                Math.abs(getTopLeft().getX() - getBottomRight().getX()),
-                Math.abs(getTopLeft().getY() - getBottomRight().getY()));
+        fill(gc, 10);
         gc.setFill(FrontColor.RGBtoColor(getColor()));
     }
 
 
     private void applyGradient(GraphicsContext gc) {
-        if (stateGradient() != EffectState.TRUE) return;
         LinearGradient linearGradient = new LinearGradient(0, 0, 1, 0, true,
                 CycleMethod.NO_CYCLE,
                 new Stop(0, FrontColor.RGBtoColor(getColor())),
                 new Stop(1, FrontColor.RGBtoColor(getColor()).invert()));
         gc.setFill(linearGradient);
-        gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
-                Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
+        fill(gc, 0);
     }
 
 
     private void applyBevel(GraphicsContext gc) {
-        if (stateBevel() != EffectState.TRUE) return;
         double x = getTopLeft().getX();
         double y = getTopLeft().getY();
         double width = Math.abs(x - getBottomRight().getX());

@@ -3,8 +3,6 @@ package backend.model;
 import backend.EffectState;
 import backend.RGBColor;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class FigureImpl implements Figure {
 
@@ -13,12 +11,6 @@ public abstract class FigureImpl implements Figure {
 
     private final RGBColor color;
 
-    //todo consultar casteo
-    public <T extends Figure> List<T> getFigures(){
-        List<T> toReturn = new ArrayList<>();
-        toReturn.add((T) this);
-        return toReturn;
-    }
 
     protected FigureImpl(RGBColor color) {
         this.color = color;

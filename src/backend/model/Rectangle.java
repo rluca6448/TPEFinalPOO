@@ -2,12 +2,6 @@ package backend.model;
 
 import backend.RGBColor;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
-
 public class Rectangle extends FigureImpl {
 
     private Point topLeft, bottomRight;

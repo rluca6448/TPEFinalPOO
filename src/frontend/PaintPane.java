@@ -88,23 +88,12 @@ public class PaintPane extends BorderPane {
 
         CheckBox[] styleArr = {shadowButton, gradientButton, beveledButton};
 
-//        shadowButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue) {
-//                for (FigureFront figure : selectedFigures) {
-//                    figure.applyShadow(gc);
-//                }
-//            } else {
-//                redrawCanvas();
-//            }
-//        });
-
         shadowButton.setOnAction(event -> {
-            if (shadowButton.isSelected()){
+            if (shadowButton.isSelected()) {
                 for (FigureFront figure : selectedFigures) {
                     figure.addShadow();
                 }
-            }
-            else {
+            } else {
                 for (FigureFront figure : selectedFigures) {
                     figure.deleteShadow();
                 }
@@ -112,12 +101,11 @@ public class PaintPane extends BorderPane {
             redrawCanvas();
         });
         gradientButton.setOnAction(event -> {
-            if (gradientButton.isSelected()){
+            if (gradientButton.isSelected()) {
                 for (FigureFront figure : selectedFigures) {
                     figure.addGradient();
                 }
-            }
-            else {
+            } else {
                 for (FigureFront figure : selectedFigures) {
                     figure.deleteGradient();
                 }
@@ -125,12 +113,11 @@ public class PaintPane extends BorderPane {
             redrawCanvas();
         });
         beveledButton.setOnAction(event -> {
-            if (beveledButton.isSelected()){
+            if (beveledButton.isSelected()) {
                 for (FigureFront figure : selectedFigures) {
                     figure.addBevel();
                 }
-            }
-            else {
+            } else {
                 for (FigureFront figure : selectedFigures) {
                     figure.deleteBevel();
                 }
@@ -138,29 +125,9 @@ public class PaintPane extends BorderPane {
             redrawCanvas();
         });
 
-//        gradientButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue) {
-//                for (FigureFront figure : selectedFigures.getFigures()) {
-//                    figure.applyGradient(gc);
-//                }
-//            } else {
-//                redrawCanvas();
-//            }
-//        });
-//
-//        beveledButton.selectedProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue) {
-//                for (FigureFront figure : selectedFigures.getFigures()) {
-//                    figure.applyBevel(gc);
-//                }
-//            } else {
-//                redrawCanvas();
-//            }
-//        });
-
         HBox checkBoxesBox = new HBox(10);
         Label checkBoxesLabel = new Label("Efectos: ");
-        checkBoxesBox.setStyle("-fx-background-color: "+GRAY);
+        checkBoxesBox.setStyle("-fx-background-color: " + GRAY);
         checkBoxesBox.setPrefWidth(100);
         checkBoxesBox.setPadding(new Insets(5));
         checkBoxesBox.getChildren().add(checkBoxesLabel);
@@ -210,39 +177,23 @@ public class PaintPane extends BorderPane {
                 for (FigureFront figure : selectedFigures) {
                     canvasState.deleteFigure(figure);
                 }
-                selectedFigures = new ArrayList<>();
+                selectedFigures.clear();
                 redrawCanvas();
             }
         });
 
         groupButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                canvasState.group(selectedFigures);
-//                List<FigureFront> list = selectedFigures.getFigures();
-//                FigureFront newFigure = new ComplexFigureFront(list);
-//                canvasState.addFigure(newFigure);
-//                for (FigureFront figure : list) {
-//                    canvasState.deleteFigure(figure);
-//                }
-                selectedFigures = new ArrayList<>();
+                canvasState.group(new ArrayList<>(selectedFigures));
+                selectedFigures.clear();
                 redrawCanvas();
             }
         });
 
         ungroupButton.setOnAction(event -> {
             if (!selectedFigures.isEmpty()) {
-                canvasState.unGroup(selectedFigures);
-//                CanvasState<FigureFront> canvasState2 = new CanvasState<>();
-//                List<FigureFront> list = selectedFigures.getFigures();
-//                canvasState.deleteFigure(selectedFigures);
-//                for (FigureFront figure : list) {
-//                    List<FigureFront> toAdd = figure.getFigures();
-//                    canvasState.deleteFigure(figure);
-//                    for (FigureFront simpleFigure : toAdd) {
-//                        canvasState.addFigure(simpleFigure);
-//                    }
-//                }
-                selectedFigures = new ArrayList<>();
+                canvasState.unGroup(new ArrayList<>(selectedFigures));
+                selectedFigures.clear();
                 redrawCanvas();
             }
         });
@@ -323,6 +274,7 @@ public class PaintPane extends BorderPane {
                 for (FigureFront figure : canvasState.figures()) {
                     if (figure.isWithin(startPoint, eventPoint) || figure.figureBelongs(eventPoint)) {
                         List<FigureFront> group = canvasState.getGroup(figure);
+                        System.out.println(group);
                         if (!selectedFigures.containsAll(group)) selectedFigures.addAll(group);
                         found = true;
                         label.append(figure).append(" ");
@@ -333,7 +285,7 @@ public class PaintPane extends BorderPane {
 
                     statusPane.updateStatus(label.toString());
                 } else {
-                    selectedFigures = new ArrayList<>();
+                    selectedFigures.clear();
                     statusPane.updateStatus("Ninguna figura encontrada");
                 }
                 selectedFigures.updateCheckBox(shadowButton, Figure::stateShadow);

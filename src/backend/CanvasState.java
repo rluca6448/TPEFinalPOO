@@ -29,12 +29,13 @@ public class CanvasState<E extends Figure> extends ArrayList<E> {
     }
 
     public void group(List<E> group){
-        if (groups.contains(group)) throw new RuntimeException("Group already exists");
-        groups.add(group);
+        if (this.groups.contains(group)) return;
+        for(E figure : group) groups.remove(getLocalGroup(figure));
+        this.groups.add(group);
+        System.out.println(this.groups);
     }
     public void unGroup(List<E> group){
-        if (!groups.contains(group)) throw new RuntimeException("Group does not exists");
-        groups.remove(group);
+        for(E figure : group) groups.remove(getLocalGroup(figure));
     }
     public Iterable<E> figures() {
         return new ArrayList<>(this);
@@ -45,12 +46,8 @@ public class CanvasState<E extends Figure> extends ArrayList<E> {
     }
 
     public List<E> getGroup(E figure){
-        for (List<E> group: groups){
-            if (group.contains(figure)) return new ArrayList<>(group);
-        }
-        //todo ver si se puede resumir
-        List<E> toReturn = new ArrayList<>();
-        toReturn.add(figure);
+        List<E> toReturn = new ArrayList<>(getLocalGroup(figure));  //PERO NO ES NULL :)
+        if (toReturn.isEmpty()) toReturn.add(figure);
         return toReturn;
     }
 
