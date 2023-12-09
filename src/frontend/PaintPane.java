@@ -43,7 +43,6 @@ public class PaintPane extends BorderPane {
     ToggleButton scaleButton = new ToggleButton("Escalar +");
     ToggleButton downscaleButton = new ToggleButton("Escalar -");
     CheckBox shadowButton = new CheckBox("Sombra");
-
     CheckBox gradientButton = new CheckBox("Gradiente");
     CheckBox beveledButton = new CheckBox("Biselado");
 
@@ -337,6 +336,9 @@ public class PaintPane extends BorderPane {
                     selectedFigures = new ArrayList<>();
                     statusPane.updateStatus("Ninguna figura encontrada");
                 }
+                selectedFigures.updateCheckBox(shadowButton, Figure::stateShadow);
+                selectedFigures.updateCheckBox(beveledButton, Figure::stateBevel);
+                selectedFigures.updateCheckBox(gradientButton, Figure::stateGradient);
                 redrawCanvas();
             }
         });

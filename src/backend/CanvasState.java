@@ -17,7 +17,15 @@ public class CanvasState<E extends Figure> extends ArrayList<E> {
         if (this.remove(figure)) {
             return;
         }
-        System.out.println("not found");
+    }
+
+    private List<E> getLocalGroup(E figure){
+        for (List<E> group: this.groups){
+            if (group.contains(figure)){
+                return group;
+            }
+        }
+        return new ArrayList<>();
     }
 
     public void group(List<E> group){
