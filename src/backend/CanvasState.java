@@ -32,7 +32,6 @@ public class CanvasState<E extends Figure> extends ArrayList<E> {
         if (this.groups.contains(group)) return;
         for(E figure : group) groups.remove(getLocalGroup(figure));
         this.groups.add(group);
-        System.out.println(this.groups);
     }
     public void unGroup(List<E> group){
         for(E figure : group) groups.remove(getLocalGroup(figure));

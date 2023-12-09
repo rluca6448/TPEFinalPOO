@@ -266,7 +266,7 @@ public class PaintPane extends BorderPane {
         });
 
         canvas.setOnMouseClicked(event -> {
-            
+
             if (selectionButton.isSelected()) {
                 Point eventPoint = new Point(event.getX(), event.getY());
                 boolean found = false;
@@ -274,7 +274,6 @@ public class PaintPane extends BorderPane {
                 for (FigureFront figure : canvasState.figures()) {
                     if (figure.isWithin(startPoint, eventPoint) || figure.figureBelongs(eventPoint)) {
                         List<FigureFront> group = canvasState.getGroup(figure);
-                        System.out.println(group);
                         if (!selectedFigures.containsAll(group)) selectedFigures.addAll(group);
                         found = true;
                         label.append(figure).append(" ");
