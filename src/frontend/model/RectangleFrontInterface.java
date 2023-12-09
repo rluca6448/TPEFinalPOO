@@ -55,15 +55,18 @@ public interface RectangleFrontInterface extends FigureFront{
     default void drawFigure(GraphicsContext gc) {
         applyShadow(gc);
 
-        gc.setFill(FrontColor.RGBtoColor(getColor()));
-        gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
-                Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
+        if (stateGradient() == EffectState.TRUE) {
+            applyGradient(gc);
+        } else {
+            gc.setFill(FrontColor.RGBtoColor(getColor()));
+            fill(gc, 0);
+        }
 
-        applyGradient(gc);
-
+        if (stateBevel() == EffectState.TRUE) {
+            applyBevel(gc);
+        } else {
         gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(),
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
-
-        applyBevel(gc);
+        }
     }
 }

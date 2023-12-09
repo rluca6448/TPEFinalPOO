@@ -54,7 +54,7 @@ public class PaintPane extends BorderPane {
     Point startPoint;
 
     // Seleccionar una figura
-    List<FigureFront> selectedFigures = new ArrayList<>();
+    SelectedFigures selectedFigures = new SelectedFigures();
 
     // StatusBar
     StatusPane statusPane;
@@ -316,7 +316,7 @@ public class PaintPane extends BorderPane {
         });
 
         canvas.setOnMouseClicked(event -> {
-
+            
             if (selectionButton.isSelected()) {
                 Point eventPoint = new Point(event.getX(), event.getY());
                 boolean found = false;
@@ -339,34 +339,6 @@ public class PaintPane extends BorderPane {
                 }
                 redrawCanvas();
             }
-            //todo ver de crear una complexfigure que solo use el front con selected que tenga estos metodos y que cambie tambien los checkbox
-//            switch (selectedFigures.stateShadow()){
-//                case TRUE -> {
-//                    shadowButton.setIndeterminate(false);
-//                    shadowButton.setSelected(true);}
-//                case FALSE -> {
-//                    shadowButton.setIndeterminate(false);
-//                    shadowButton.setSelected(false);}
-//                case UNDETERMINED -> shadowButton.setIndeterminate(true);
-//            }
-//            switch (selectedFigures.stateGradient()){
-//                case TRUE -> {
-//                    gradientButton.setIndeterminate(false);
-//                    gradientButton.setSelected(true);}
-//                case FALSE -> {
-//                    gradientButton.setIndeterminate(false);
-//                    gradientButton.setSelected(false);}
-//                case UNDETERMINED -> gradientButton.setIndeterminate(true);
-//            }
-//            switch (selectedFigures.stateBevel()){
-//                case TRUE -> {
-//                    beveledButton.setIndeterminate(false);
-//                    beveledButton.setSelected(true);}
-//                case FALSE -> {
-//                    beveledButton.setIndeterminate(false);
-//                    beveledButton.setSelected(false);}
-//                case UNDETERMINED -> beveledButton.setIndeterminate(true);
-//            }
         });
 
         canvas.setOnMouseDragged(event -> {

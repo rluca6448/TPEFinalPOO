@@ -18,8 +18,7 @@ public interface EllipseFrontInterface extends FigureFront {
     private void applyShadow(GraphicsContext gc) {
         if (stateShadow() != EffectState.TRUE) return;
         gc.setFill(Color.GRAY);
-        gc.fillOval(getCenterPoint().getX() - getsMayorAxis() / 2 + 10.0,
-                getCenterPoint().getY() - getsMinorAxis() / 2 + 10.0, getsMayorAxis(), getsMinorAxis());
+        fill(gc, 10.0);
         gc.setFill(FrontColor.RGBtoColor(getColor()));
     }
     
@@ -30,7 +29,7 @@ public interface EllipseFrontInterface extends FigureFront {
                 new Stop(0, FrontColor.RGBtoColor(getColor())),
                 new Stop(1, FrontColor.RGBtoColor(getColor()).invert()));
         gc.setFill(radialGradient);
-        gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
+        fill(gc, 0);
     }
 
 
@@ -48,16 +47,20 @@ public interface EllipseFrontInterface extends FigureFront {
 
 
     default void drawFigure(GraphicsContext gc) {
-        //todo: ver si se puede evitar uso excesivo de fillOval (o fillRectangle) y mejorar el resto de la función
         applyShadow(gc);
 
         gc.setFill(FrontColor.RGBtoColor(getColor()));
-        gc.fillOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
+        if (stateGradient() == EffectState.TRUE) {
+            applyGradient(gc);
+        } else {
+            fill(gc, 0);
+        }
 
-        applyGradient(gc);
+        if (stateBevel() == EffectState.TRUE) {
+            applyBevel(gc);
+        } else {
+            gc.strokeOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
+        }
 
-        gc.strokeOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());
-
-        applyBevel(gc);
     }
 }

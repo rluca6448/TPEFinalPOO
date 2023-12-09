@@ -3,17 +3,10 @@ package backend;
 import backend.model.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 
 public class CanvasState<E extends Figure> extends ArrayList<E> {
-    // public void ungroup(List<E> figures){
-    // for (E figure : figures){
-    //   this.addAll(figure.getFigures);
-    //   this.delete(figure);
-    // }
-    // }
-//    private List<E> figures = new ArrayList<>();
     private List<List<E>> groups = new ArrayList<>();
 
     public void addFigure(E figure) {
@@ -38,6 +31,7 @@ public class CanvasState<E extends Figure> extends ArrayList<E> {
     public Iterable<E> figures() {
         return new ArrayList<>(this);
     }
+
     public Iterable<List<E>> groups() {
         return new ArrayList<>(groups);
     }

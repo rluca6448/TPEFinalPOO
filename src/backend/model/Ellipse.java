@@ -2,9 +2,6 @@ package backend.model;
 
 import backend.RGBColor;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Ellipse extends FigureImpl {
 
     protected Point centerPoint;
