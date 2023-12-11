@@ -60,9 +60,7 @@ public class PaintPane extends BorderPane {
 
     //Color background gris
     private static final String GRAY = "#999";
-
-    // Colores de relleno de cada figura
-
+    
     public PaintPane(CanvasState<FigureFront> canvasState, StatusPane statusPane) {
         this.canvasState = canvasState;
         this.statusPane = statusPane;
