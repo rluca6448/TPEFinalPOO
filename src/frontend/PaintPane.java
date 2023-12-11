@@ -266,7 +266,7 @@ public class PaintPane extends BorderPane {
         });
 
         canvas.setOnMouseClicked(event -> {
-            
+
             if (selectionButton.isSelected()) {
                 Point eventPoint = new Point(event.getX(), event.getY());
                 boolean found = false;
