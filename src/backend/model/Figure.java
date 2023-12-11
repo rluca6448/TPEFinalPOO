@@ -1,6 +1,5 @@
 package backend.model;
 
-import backend.EffectState;
 import backend.RGBColor;
 
 public interface Figure {
@@ -24,19 +23,19 @@ public interface Figure {
 
     void addShadow();
 
-    EffectState stateShadow();
+    boolean hasShadow();
 
     void deleteShadow();
 
     void addGradient();
 
-    EffectState stateGradient();
+    boolean hasGradient();
 
     void deleteGradient();
 
     void addBevel();
 
-    EffectState stateBevel();
+    boolean hasBevel();
 
     void deleteBevel();
 }

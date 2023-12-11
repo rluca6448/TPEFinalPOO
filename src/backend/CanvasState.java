@@ -3,13 +3,14 @@ package backend;
 import backend.model.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 
 public class CanvasState<E extends Figure> extends ArrayList<E> {
     private List<List<E>> groups = new ArrayList<>();
 
     public void addFigure(E figure) {
+        if (this.contains(figure)) return;
         this.add(figure);
     }
 
@@ -32,7 +33,6 @@ public class CanvasState<E extends Figure> extends ArrayList<E> {
         if (this.groups.contains(group)) return;
         for(E figure : group) groups.remove(getLocalGroup(figure));
         this.groups.add(group);
-        System.out.println(this.groups);
     }
     public void unGroup(List<E> group){
         for(E figure : group) groups.remove(getLocalGroup(figure));

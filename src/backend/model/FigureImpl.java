@@ -1,6 +1,5 @@
 package backend.model;
 
-import backend.EffectState;
 import backend.RGBColor;
 
 
@@ -18,17 +17,6 @@ public abstract class FigureImpl implements Figure {
         gradient = false;
         bevel = false;
     }
-//    public void setFigure(E figure){
-//        this.figure = figure;
-//    }
-//    public boolean isComplex(){
-//        return false;
-//    }
-//    public Set<Figure> getFigures2(){
-//        Set<Figure> toReturn = new HashSet<>();
-//        toReturn.add(this);
-//        return toReturn;
-//    }
 
     public RGBColor getColor() {
         return color;
@@ -38,8 +26,8 @@ public abstract class FigureImpl implements Figure {
         shadow = true;
     }
 
-    public EffectState stateShadow() {
-        return shadow ? EffectState.TRUE : EffectState.FALSE;
+    public boolean hasShadow() {
+        return shadow;
     }
 
     public void deleteShadow() {
@@ -50,8 +38,8 @@ public abstract class FigureImpl implements Figure {
         gradient = true;
     }
 
-    public EffectState stateGradient() {
-        return gradient ? EffectState.TRUE : EffectState.FALSE;
+    public boolean hasGradient() {
+        return gradient;
     }
 
     public void deleteGradient() {
@@ -62,8 +50,8 @@ public abstract class FigureImpl implements Figure {
         bevel = true;
     }
 
-    public EffectState stateBevel() {
-        return bevel ? EffectState.TRUE : EffectState.FALSE;
+    public boolean hasBevel() {
+        return bevel;
     }
 
     public void deleteBevel() {

@@ -12,15 +12,6 @@ public class Rectangle extends FigureImpl {
         this.bottomRight = bottomRight;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj instanceof Rectangle aux){
-            return topLeft.equals(aux.getTopLeft()) && bottomRight.equals(aux.getBottomRight());
-        }
-        return false;
-    }
-
     public Point getTopLeft() {
         return topLeft;
     }
