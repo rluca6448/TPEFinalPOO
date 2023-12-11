@@ -15,11 +15,11 @@ public class CanvasState<E extends Figure> extends ArrayList<E> {
     }
 
     public void deleteFigure(E figure) {
-        if (this.remove(figure)) {
-            return;
-        }
+        // No se verifica que contenga figure pues remove() de la lib ya lo verif.
+        this.remove(figure);
     }
 
+    //devuelve el grupo que contiene figure. Este es un puntero al grupo y no una copia.
     private List<E> getLocalGroup(E figure){
         for (List<E> group: this.groups){
             if (group.contains(figure)){
@@ -41,12 +41,10 @@ public class CanvasState<E extends Figure> extends ArrayList<E> {
         return new ArrayList<>(this);
     }
 
-    public Iterable<List<E>> groups() {
-        return new ArrayList<>(groups);
-    }
-
+    //devuelve una copia del grupo al que pertenece figure
+    //si figure no pertenece a ningún grupo, devuelve una lista que solo contiene figure
     public List<E> getGroup(E figure){
-        List<E> toReturn = new ArrayList<>(getLocalGroup(figure));  //PERO NO ES NULL :)
+        List<E> toReturn = new ArrayList<>(getLocalGroup(figure));
         if (toReturn.isEmpty()) toReturn.add(figure);
         return toReturn;
     }

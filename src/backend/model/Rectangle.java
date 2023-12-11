@@ -26,15 +26,17 @@ public class Rectangle extends FigureImpl {
     }
 
     @Override
+    //se fija si el eventPoint está dentro de this
     public boolean figureBelongs(Point eventPoint) {
         return eventPoint.getX() > getTopLeft().getX() && eventPoint.getX() < getBottomRight().getX() &&
                 eventPoint.getY() > getTopLeft().getY() && eventPoint.getY() < getBottomRight().getY();
     }
 
     @Override
-    public boolean isWithin(Point topLeft, Point bottomRight) {
-        return getTopLeft().getX() > topLeft.getX() && getTopLeft().getY() > topLeft.getY() &&
-                getBottomRight().getX() < bottomRight.getX() && getBottomRight().getY() < bottomRight.getY();
+    //se fija si el rectángulo formado por topLeftSelection y bottomRightSelection contienen a this
+    public boolean isWithin(Point topLeftSelection, Point bottomRightSelection) {
+        return getTopLeft().getX() >= topLeftSelection.getX() && getTopLeft().getY() >= topLeftSelection.getY() &&
+                getBottomRight().getX() <= bottomRightSelection.getX() && getBottomRight().getY() <= bottomRightSelection.getY();
     }
 
     @Override

@@ -274,7 +274,6 @@ public class PaintPane extends BorderPane {
                 for (FigureFront figure : canvasState.figures()) {
                     if (figure.isWithin(startPoint, eventPoint) || figure.figureBelongs(eventPoint)) {
                         List<FigureFront> group = canvasState.getGroup(figure);
-                        System.out.println(group);
                         if (!selectedFigures.containsAll(group)) selectedFigures.addAll(group);
                         found = true;
                         label.append(figure).append(" ");
@@ -288,9 +287,9 @@ public class PaintPane extends BorderPane {
                     selectedFigures.clear();
                     statusPane.updateStatus("Ninguna figura encontrada");
                 }
-                selectedFigures.updateCheckBox(shadowButton, Figure::stateShadow);
-                selectedFigures.updateCheckBox(beveledButton, Figure::stateBevel);
-                selectedFigures.updateCheckBox(gradientButton, Figure::stateGradient);
+                selectedFigures.updateCheckBox(shadowButton, Figure::hasShadow);
+                selectedFigures.updateCheckBox(beveledButton, Figure::hasBevel);
+                selectedFigures.updateCheckBox(gradientButton, Figure::hasGradient);
                 redrawCanvas();
             }
         });

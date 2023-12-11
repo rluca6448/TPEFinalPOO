@@ -8,13 +8,6 @@ public class Point {
         this.x = x;
         this.y = y;
     }
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj instanceof Point aux){
-            return x == aux.getX() && y == aux.getY();
-        }
-        return false;
-    }
 
     public double getX() {
         return x;

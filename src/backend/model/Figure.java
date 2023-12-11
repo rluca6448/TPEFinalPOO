@@ -18,7 +18,6 @@ public interface Figure {
 
     void scaleFigure(double factor);
 
-
     RGBColor getColor();
 
     void addShadow();

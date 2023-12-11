@@ -6,7 +6,6 @@ import backend.RGBColor;
 public abstract class FigureImpl implements Figure {
 
     private boolean shadow, gradient, bevel;
-//    private E figure;
 
     private final RGBColor color;
 

@@ -13,13 +13,6 @@ public class Ellipse extends FigureImpl {
         this.sMayorAxis = sMayorAxis;
         this.sMinorAxis = sMinorAxis;
     }
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj instanceof Ellipse aux){
-            return centerPoint.equals(aux.getCenterPoint()) && sMayorAxis == aux.getsMayorAxis() && sMinorAxis == aux.getsMinorAxis();
-        }
-        return false;
-    }
 
     @Override
     public String toString() {
@@ -41,7 +34,7 @@ public class Ellipse extends FigureImpl {
     private static final double ELLIPSE_PRECISION_THRESHOLD = 0.25;
 
     @Override
-    public boolean figureBelongs(Point eventPoint) { // se modifico para que sea mas claro como se calcula si un punto pertenece
+    public boolean figureBelongs(Point eventPoint) {
         double xDiff = eventPoint.getX() - getCenterPoint().getX(); // (x - x0)^2
         double yDiff = eventPoint.getY() - getCenterPoint().getY(); // (y - y0)^2
 
@@ -52,15 +45,12 @@ public class Ellipse extends FigureImpl {
     }
 
     @Override
+    //se fija si el rectángulo formado por topLeftSelection y bottomRightSelection contienen a this
     public boolean isWithin(Point topLeft, Point bottomRight) {
-        return getCenterPoint().getX() - getsMayorAxis() / 2 >= topLeft.getX() &&
-                getCenterPoint().getX() - getsMayorAxis() / 2 <= bottomRight.getX() &&
-                getCenterPoint().getX() + getsMayorAxis() / 2 <= bottomRight.getX() &&
-                getCenterPoint().getX() + getsMayorAxis() / 2 >= topLeft.getX() &&
-                getCenterPoint().getY() + getsMinorAxis() / 2 >= topLeft.getY() &&
-                getCenterPoint().getY() + getsMinorAxis() / 2 <= bottomRight.getY() &&
-                getCenterPoint().getY() - getsMinorAxis() / 2 <= bottomRight.getY() &&
-                getCenterPoint().getY() - getsMinorAxis() / 2 >= topLeft.getY();
+        return topLeft.getX() <= getCenterPoint().getX() - getsMayorAxis()/2 &&
+                getCenterPoint().getX() + getsMayorAxis()/2 <= bottomRight.getX() &&
+                topLeft.getY() <= getCenterPoint().getY() - getsMinorAxis()/2 &&
+                getCenterPoint().getY() + getsMinorAxis()/2 <= bottomRight.getY();
     }
 
     @Override

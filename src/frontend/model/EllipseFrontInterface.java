@@ -1,6 +1,5 @@
 package frontend.model;
 
-import backend.EffectState;
 import backend.model.Point;
 import frontend.FrontColor;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,13 +20,14 @@ public interface EllipseFrontInterface extends FigureFront {
     }
 
     private void applyShadow(GraphicsContext gc) {
-        if (stateShadow() != EffectState.TRUE) return;
+        if (!hasShadow()) return;
         gc.setFill(Color.GRAY);
         fill(gc, 10.0);
         gc.setFill(FrontColor.RGBtoColor(getColor()));
     }
     
     private void applyGradient(GraphicsContext gc) {
+        if (!hasGradient()) return;
         RadialGradient radialGradient = new RadialGradient(0, 0, 0.5, 0.5, 0.5, true,
                 CycleMethod.NO_CYCLE,
                 new Stop(0, FrontColor.RGBtoColor(getColor())),
@@ -38,6 +38,7 @@ public interface EllipseFrontInterface extends FigureFront {
 
 
     private void applyBevel(GraphicsContext gc) {
+        if (!hasBevel()) return;
         double arcX = getCenterPoint().getX() - getsMayorAxis()/2;
         double arcY = getCenterPoint().getY() - getsMinorAxis()/2;
         gc.setLineWidth(10);
@@ -53,13 +54,13 @@ public interface EllipseFrontInterface extends FigureFront {
         applyShadow(gc);
 
         gc.setFill(FrontColor.RGBtoColor(getColor()));
-        if (stateGradient() == EffectState.TRUE) {
+        if (hasGradient()) {
             applyGradient(gc);
         } else {
             fill(gc, 0);
         }
 
-        if (stateBevel() == EffectState.TRUE) {
+        if (hasBevel()) {
             applyBevel(gc);
         } else {
             gc.strokeOval(getCenterPoint().getX() - (getsMayorAxis() / 2), getCenterPoint().getY() - (getsMinorAxis() / 2), getsMayorAxis(), getsMinorAxis());

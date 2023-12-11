@@ -1,6 +1,5 @@
 package frontend.model;
 
-import backend.EffectState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -20,7 +19,7 @@ public interface RectangleFrontInterface extends FigureFront{
     }
 
     private void applyShadow(GraphicsContext gc) {
-        if (stateShadow() != EffectState.TRUE) return;
+        if (!hasShadow()) return;
         gc.setFill(Color.GRAY);
         fill(gc, 10);
         gc.setFill(FrontColor.RGBtoColor(getColor()));
@@ -55,14 +54,14 @@ public interface RectangleFrontInterface extends FigureFront{
     default void drawFigure(GraphicsContext gc) {
         applyShadow(gc);
 
-        if (stateGradient() == EffectState.TRUE) {
+        if (hasGradient()) {
             applyGradient(gc);
         } else {
             gc.setFill(FrontColor.RGBtoColor(getColor()));
             fill(gc, 0);
         }
 
-        if (stateBevel() == EffectState.TRUE) {
+        if (hasBevel()) {
             applyBevel(gc);
         } else {
         gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(),
