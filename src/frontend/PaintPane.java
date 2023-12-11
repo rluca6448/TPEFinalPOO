@@ -1,245 +1,324 @@
 package frontend;
 
-import backend.CanvasState;
-import backend.model.*;
+import frontend.model.*;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import backend.*;
+import backend.model.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PaintPane extends BorderPane {
 
-	// BackEnd
-	CanvasState canvasState;
+    // BackEnd
+    CanvasState<FigureFront> canvasState;
 
-	// Canvas y relacionados
-	Canvas canvas = new Canvas(800, 600);
-	GraphicsContext gc = canvas.getGraphicsContext2D();
-	Color lineColor = Color.BLACK;
-	Color defaultFillColor = Color.YELLOW;
+    // Canvas y relacionados
+    Canvas canvas = new Canvas(800, 600);
+    GraphicsContext gc = canvas.getGraphicsContext2D();
+    Color lineColor = Color.BLACK;
+    Color defaultFillColor = Color.YELLOW;
 
-	// Botones Barra Izquierda
-	ToggleButton selectionButton = new ToggleButton("Seleccionar");
-	ToggleButton rectangleButton = new ToggleButton("Rectángulo");
-	ToggleButton circleButton = new ToggleButton("Círculo");
-	ToggleButton squareButton = new ToggleButton("Cuadrado");
-	ToggleButton ellipseButton = new ToggleButton("Elipse");
-	ToggleButton deleteButton = new ToggleButton("Borrar");
+    // Botones Barra Izquierda
+    ToggleButton selectionButton = new ToggleButton("Seleccionar");
+    ToggleButton rectangleButton = new ToggleButton("Rectángulo");
+    ToggleButton circleButton = new ToggleButton("Círculo");
+    ToggleButton squareButton = new ToggleButton("Cuadrado");
+    ToggleButton ellipseButton = new ToggleButton("Elipse");
+    ToggleButton deleteButton = new ToggleButton("Borrar");
+    ToggleButton groupButton = new ToggleButton("Agrupar");
+    ToggleButton ungroupButton = new ToggleButton("Desagrupar");
+    ToggleButton rotateRightButton = new ToggleButton("Girar D");
+    ToggleButton flipHorizontallyButton = new ToggleButton("Voltear H");
+    ToggleButton flipVerticallyButton = new ToggleButton("Voltear V");
+    ToggleButton scaleButton = new ToggleButton("Escalar +");
+    ToggleButton downscaleButton = new ToggleButton("Escalar -");
+    CheckBox shadowButton = new CheckBox("Sombra");
+    CheckBox gradientButton = new CheckBox("Gradiente");
+    CheckBox beveledButton = new CheckBox("Biselado");
 
-	// Selector de color de relleno
-	ColorPicker fillColorPicker = new ColorPicker(defaultFillColor);
+    // Selector de color de relleno
+    ColorPicker fillColorPicker = new ColorPicker(defaultFillColor);
 
-	// Dibujar una figura
-	Point startPoint;
+    // Dibujar una figura
+    Point startPoint;
 
-	// Seleccionar una figura
-	Figure selectedFigure;
+    // Seleccionar una figura
+    SelectedFigures selectedFigures = new SelectedFigures();
 
-	// StatusBar
-	StatusPane statusPane;
+    // StatusBar
+    StatusPane statusPane;
 
-	// Colores de relleno de cada figura
-	Map<Figure, Color> figureColorMap = new HashMap<>();
+    //Color background gris
+    private static final String GRAY = "#999";
+    
+    public PaintPane(CanvasState<FigureFront> canvasState, StatusPane statusPane) {
+        this.canvasState = canvasState;
+        this.statusPane = statusPane;
+        shadowButton.setAllowIndeterminate(false);
+        gradientButton.setAllowIndeterminate(false);
+        beveledButton.setAllowIndeterminate(false);
 
-	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
-		this.canvasState = canvasState;
-		this.statusPane = statusPane;
-		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton};
-		ToggleGroup tools = new ToggleGroup();
-		for (ToggleButton tool : toolsArr) {
-			tool.setMinWidth(90);
-			tool.setToggleGroup(tools);
-			tool.setCursor(Cursor.HAND);
-		}
-		VBox buttonsBox = new VBox(10);
-		buttonsBox.getChildren().addAll(toolsArr);
-		buttonsBox.getChildren().add(fillColorPicker);
-		buttonsBox.setPadding(new Insets(5));
-		buttonsBox.setStyle("-fx-background-color: #999");
-		buttonsBox.setPrefWidth(100);
-		gc.setLineWidth(1);
+        ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton,
+                groupButton, ungroupButton,
+                rotateRightButton, flipHorizontallyButton, flipVerticallyButton, scaleButton, downscaleButton};
+        ToggleGroup tools = new ToggleGroup();
+        for (ToggleButton tool : toolsArr) {
+            tool.setMinWidth(90);
+            tool.setToggleGroup(tools);
+            tool.setCursor(Cursor.HAND);
+        }
+        VBox buttonsBox = new VBox(10);
+        buttonsBox.getChildren().addAll(toolsArr);
+        buttonsBox.getChildren().add(fillColorPicker);
+        buttonsBox.setPadding(new Insets(5));
+        buttonsBox.setStyle("-fx-background-color: " + GRAY);
+        buttonsBox.setPrefWidth(100);
 
-		canvas.setOnMousePressed(event -> {
-			startPoint = new Point(event.getX(), event.getY());
-		});
+        CheckBox[] styleArr = {shadowButton, gradientButton, beveledButton};
 
-		canvas.setOnMouseReleased(event -> {
-			Point endPoint = new Point(event.getX(), event.getY());
-			if(startPoint == null) {
-				return ;
-			}
-			if(endPoint.getX() < startPoint.getX() || endPoint.getY() < startPoint.getY()) {
-				return ;
-			}
-			Figure newFigure = null;
-			if(rectangleButton.isSelected()) {
-				newFigure = new Rectangle(startPoint, endPoint);
-			}
-			else if(circleButton.isSelected()) {
-				double circleRadius = Math.abs(endPoint.getX() - startPoint.getX());
-				newFigure = new Circle(startPoint, circleRadius);
-			} else if(squareButton.isSelected()) {
-				double size = Math.abs(endPoint.getX() - startPoint.getX());
-				newFigure = new Square(startPoint, size);
-			} else if(ellipseButton.isSelected()) {
-				Point centerPoint = new Point(Math.abs(endPoint.x + startPoint.x) / 2, (Math.abs((endPoint.y + startPoint.y)) / 2));
-				double sMayorAxis = Math.abs(endPoint.x - startPoint.x);
-				double sMinorAxis = Math.abs(endPoint.y - startPoint.y);
-				newFigure = new Ellipse(centerPoint, sMayorAxis, sMinorAxis);
-			} else {
-				return ;
-			}
-			figureColorMap.put(newFigure, fillColorPicker.getValue());
-			canvasState.addFigure(newFigure);
-			startPoint = null;
-			redrawCanvas();
-		});
+        shadowButton.setOnAction(event -> {
+            if (shadowButton.isSelected()) {
+                for (FigureFront figure : selectedFigures) {
+                    figure.addShadow();
+                }
+            } else {
+                for (FigureFront figure : selectedFigures) {
+                    figure.deleteShadow();
+                }
+            }
+            redrawCanvas();
+        });
+        gradientButton.setOnAction(event -> {
+            if (gradientButton.isSelected()) {
+                for (FigureFront figure : selectedFigures) {
+                    figure.addGradient();
+                }
+            } else {
+                for (FigureFront figure : selectedFigures) {
+                    figure.deleteGradient();
+                }
+            }
+            redrawCanvas();
+        });
+        beveledButton.setOnAction(event -> {
+            if (beveledButton.isSelected()) {
+                for (FigureFront figure : selectedFigures) {
+                    figure.addBevel();
+                }
+            } else {
+                for (FigureFront figure : selectedFigures) {
+                    figure.deleteBevel();
+                }
+            }
+            redrawCanvas();
+        });
 
-		canvas.setOnMouseMoved(event -> {
-			Point eventPoint = new Point(event.getX(), event.getY());
-			boolean found = false;
-			StringBuilder label = new StringBuilder();
-			for(Figure figure : canvasState.figures()) {
-				if(figureBelongs(figure, eventPoint)) {
-					found = true;
-					label.append(figure.toString());
-				}
-			}
-			if(found) {
-				statusPane.updateStatus(label.toString());
-			} else {
-				statusPane.updateStatus(eventPoint.toString());
-			}
-		});
+        HBox checkBoxesBox = new HBox(10);
+        Label checkBoxesLabel = new Label("Efectos: ");
+        checkBoxesBox.setStyle("-fx-background-color: " + GRAY);
+        checkBoxesBox.setPrefWidth(100);
+        checkBoxesBox.setPadding(new Insets(5));
+        checkBoxesBox.getChildren().add(checkBoxesLabel);
+        checkBoxesBox.getChildren().addAll(styleArr);
+        checkBoxesBox.setAlignment(Pos.CENTER);
+        setTop(checkBoxesBox);
 
-		canvas.setOnMouseClicked(event -> {
-			if(selectionButton.isSelected()) {
-				Point eventPoint = new Point(event.getX(), event.getY());
-				boolean found = false;
-				StringBuilder label = new StringBuilder("Se seleccionó: ");
-				for (Figure figure : canvasState.figures()) {
-					if(figureBelongs(figure, eventPoint)) {
-						found = true;
-						selectedFigure = figure;
-						label.append(figure.toString());
-					}
-				}
-				if (found) {
-					statusPane.updateStatus(label.toString());
-				} else {
-					selectedFigure = null;
-					statusPane.updateStatus("Ninguna figura encontrada");
-				}
-				redrawCanvas();
-			}
-		});
+        gc.setLineWidth(1);
 
-		canvas.setOnMouseDragged(event -> {
-			if(selectionButton.isSelected()) {
-				Point eventPoint = new Point(event.getX(), event.getY());
-				double diffX = (eventPoint.getX() - startPoint.getX()) / 100;
-				double diffY = (eventPoint.getY() - startPoint.getY()) / 100;
-				if(selectedFigure instanceof Rectangle) {
-					Rectangle rectangle = (Rectangle) selectedFigure;
-					rectangle.getTopLeft().x += diffX;
-					rectangle.getBottomRight().x += diffX;
-					rectangle.getTopLeft().y += diffY;
-					rectangle.getBottomRight().y += diffY;
-				} else if(selectedFigure instanceof Circle) {
-					Circle circle = (Circle) selectedFigure;
-					circle.getCenterPoint().x += diffX;
-					circle.getCenterPoint().y += diffY;
-				} else if(selectedFigure instanceof Square) {
-					Square square = (Square) selectedFigure;
-					square.getTopLeft().x += diffX;
-					square.getBottomRight().x += diffX;
-					square.getTopLeft().y += diffY;
-					square.getBottomRight().y += diffY;
-				} else if(selectedFigure instanceof Ellipse) {
-					Ellipse ellipse = (Ellipse) selectedFigure;
-					ellipse.getCenterPoint().x += diffX;
-					ellipse.getCenterPoint().y += diffY;
-				}
-				redrawCanvas();
-			}
-		});
+        canvas.setOnMousePressed(event -> startPoint = new Point(event.getX(), event.getY()));
 
-		deleteButton.setOnAction(event -> {
-			if (selectedFigure != null) {
-				canvasState.deleteFigure(selectedFigure);
-				selectedFigure = null;
-				redrawCanvas();
-			}
-		});
+        canvas.setOnMouseReleased(event -> {
+            Point endPoint = new Point(event.getX(), event.getY());
+            if (startPoint == null) {
+                return;
+            }
+            if (endPoint.getX() < startPoint.getX() || endPoint.getY() < startPoint.getY()) {
+                return;
+            }
+            FigureFront newFigure;
+            RGBColor color = new RGBColor(fillColorPicker.getValue().getRed(),
+                    fillColorPicker.getValue().getGreen(),
+                    fillColorPicker.getValue().getBlue());
+            if (rectangleButton.isSelected()) {
+                newFigure = new RectangleFront(startPoint, endPoint, color);
+            } else if (circleButton.isSelected()) {
+                double circleRadius = Math.abs(endPoint.getX() - startPoint.getX());
+                newFigure = new CircleFront(startPoint, circleRadius, color);
+            } else if (squareButton.isSelected()) {
+                double size = Math.abs(endPoint.getX() - startPoint.getX());
+                newFigure = new SquareFront(startPoint, size, color);
+            } else if (ellipseButton.isSelected()) {
+                Point centerPoint = new Point(Math.abs(endPoint.getX() + startPoint.getX()) / 2, (Math.abs((endPoint.getY() + startPoint.getY())) / 2));
+                double sMayorAxis = Math.abs(endPoint.getX() - startPoint.getX());
+                double sMinorAxis = Math.abs(endPoint.getY() - startPoint.getY());
+                newFigure = new EllipseFront(centerPoint, sMayorAxis, sMinorAxis, color);
+            } else {
+                return;
+            }
+            canvasState.addFigure(newFigure);
+            startPoint = null;
+            redrawCanvas();
+        });
 
-		setLeft(buttonsBox);
-		setRight(canvas);
-	}
+        deleteButton.setOnAction(event -> {
+            if (!selectedFigures.isEmpty()) {
+                for (FigureFront figure : selectedFigures) {
+                    canvasState.deleteFigure(figure);
+                }
+                selectedFigures.clear();
+                redrawCanvas();
+            }
+        });
 
-	void redrawCanvas() {
-		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-		for(Figure figure : canvasState.figures()) {
-			if(figure == selectedFigure) {
-				gc.setStroke(Color.RED);
-			} else {
-				gc.setStroke(lineColor);
-			}
-			gc.setFill(figureColorMap.get(figure));
-			if(figure instanceof Rectangle) {
-				Rectangle rectangle = (Rectangle) figure;
-				gc.fillRect(rectangle.getTopLeft().getX(), rectangle.getTopLeft().getY(),
-						Math.abs(rectangle.getTopLeft().getX() - rectangle.getBottomRight().getX()), Math.abs(rectangle.getTopLeft().getY() - rectangle.getBottomRight().getY()));
-				gc.strokeRect(rectangle.getTopLeft().getX(), rectangle.getTopLeft().getY(),
-						Math.abs(rectangle.getTopLeft().getX() - rectangle.getBottomRight().getX()), Math.abs(rectangle.getTopLeft().getY() - rectangle.getBottomRight().getY()));
-			} else if(figure instanceof Circle) {
-				Circle circle = (Circle) figure;
-				double diameter = circle.getRadius() * 2;
-				gc.fillOval(circle.getCenterPoint().getX() - circle.getRadius(), circle.getCenterPoint().getY() - circle.getRadius(), diameter, diameter);
-				gc.strokeOval(circle.getCenterPoint().getX() - circle.getRadius(), circle.getCenterPoint().getY() - circle.getRadius(), diameter, diameter);
-			} else if(figure instanceof Square) {
-				Square square = (Square) figure;
-				gc.fillRect(square.getTopLeft().getX(), square.getTopLeft().getY(),
-						Math.abs(square.getTopLeft().getX() - square.getBottomRight().getX()), Math.abs(square.getTopLeft().getY() - square.getBottomRight().getY()));
-				gc.strokeRect(square.getTopLeft().getX(), square.getTopLeft().getY(),
-						Math.abs(square.getTopLeft().getX() - square.getBottomRight().getX()), Math.abs(square.getTopLeft().getY() - square.getBottomRight().getY()));
-			} else if(figure instanceof Ellipse) {
-				Ellipse ellipse = (Ellipse) figure;
-				gc.strokeOval(ellipse.getCenterPoint().getX() - (ellipse.getsMayorAxis() / 2), ellipse.getCenterPoint().getY() - (ellipse.getsMinorAxis() / 2), ellipse.getsMayorAxis(), ellipse.getsMinorAxis());
-				gc.fillOval(ellipse.getCenterPoint().getX() - (ellipse.getsMayorAxis() / 2), ellipse.getCenterPoint().getY() - (ellipse.getsMinorAxis() / 2), ellipse.getsMayorAxis(), ellipse.getsMinorAxis());
-			}
-		}
-	}
+        groupButton.setOnAction(event -> {
+            if (!selectedFigures.isEmpty()) {
+                canvasState.group(new ArrayList<>(selectedFigures));
+                selectedFigures.clear();
+                redrawCanvas();
+            }
+        });
 
-	boolean figureBelongs(Figure figure, Point eventPoint) {
-		boolean found = false;
-		if(figure instanceof Rectangle) {
-			Rectangle rectangle = (Rectangle) figure;
-			found = eventPoint.getX() > rectangle.getTopLeft().getX() && eventPoint.getX() < rectangle.getBottomRight().getX() &&
-					eventPoint.getY() > rectangle.getTopLeft().getY() && eventPoint.getY() < rectangle.getBottomRight().getY();
-		} else if(figure instanceof Circle) {
-			Circle circle = (Circle) figure;
-			found = Math.sqrt(Math.pow(circle.getCenterPoint().getX() - eventPoint.getX(), 2) +
-					Math.pow(circle.getCenterPoint().getY() - eventPoint.getY(), 2)) < circle.getRadius();
-		} else if(figure instanceof Square) {
-			Square square = (Square) figure;
-			found = eventPoint.getX() > square.getTopLeft().getX() && eventPoint.getX() < square.getBottomRight().getX() &&
-					eventPoint.getY() > square.getTopLeft().getY() && eventPoint.getY() < square.getBottomRight().getY();
-		} else if(figure instanceof Ellipse) {
-			Ellipse ellipse = (Ellipse) figure;
-			// Nota: Fórmula aproximada. No es necesario corregirla.
-			found = ((Math.pow(eventPoint.getX() - ellipse.getCenterPoint().getX(), 2) / Math.pow(ellipse.getsMayorAxis(), 2)) +
-					(Math.pow(eventPoint.getY() - ellipse.getCenterPoint().getY(), 2) / Math.pow(ellipse.getsMinorAxis(), 2))) <= 0.30;
-		}
-		return found;
-	}
+        ungroupButton.setOnAction(event -> {
+            if (!selectedFigures.isEmpty()) {
+                canvasState.unGroup(new ArrayList<>(selectedFigures));
+                selectedFigures.clear();
+                redrawCanvas();
+            }
+        });
 
+        rotateRightButton.setOnAction(event -> {
+            if (!selectedFigures.isEmpty()) {
+                for (Figure figure : selectedFigures) {
+                    figure.rotateFigure();
+                }
+                startPoint = null;
+                redrawCanvas();
+            }
+        });
+
+        flipHorizontallyButton.setOnAction(event -> {
+            if (!selectedFigures.isEmpty()) {
+                for (Figure figure : selectedFigures) {
+                    figure.flipHorizontally();
+                }
+                startPoint = null;
+                redrawCanvas();
+            }
+        });
+
+        flipVerticallyButton.setOnAction(event -> {
+            if (!selectedFigures.isEmpty()) {
+                for (Figure figure : selectedFigures) {
+                    figure.flipVertically();
+                }
+                startPoint = null;
+                redrawCanvas();
+            }
+        });
+
+        scaleButton.setOnAction(event -> {
+            if (!selectedFigures.isEmpty()) {
+                for (Figure figure : selectedFigures) {
+                    figure.scaleFigure(1.25);
+                }
+                startPoint = null;
+                redrawCanvas();
+            }
+        });
+
+        downscaleButton.setOnAction(event -> {
+            if (!selectedFigures.isEmpty()) {
+                for (Figure figure : selectedFigures) {
+                    figure.scaleFigure(0.75);
+                }
+                startPoint = null;
+                redrawCanvas();
+            }
+        });
+
+        canvas.setOnMouseMoved(event -> {
+            Point eventPoint = new Point(event.getX(), event.getY());
+            boolean found = false;
+            StringBuilder label = new StringBuilder();
+            for (FigureFront figure : canvasState.figures()) {
+                if (figure.figureBelongs(eventPoint)) {
+                    found = true;
+                    label.append(figure);
+                }
+            }
+            if (found) {
+                statusPane.updateStatus(label.toString());
+            } else {
+                statusPane.updateStatus(eventPoint.toString());
+            }
+        });
+
+        canvas.setOnMouseClicked(event -> {
+
+            if (selectionButton.isSelected()) {
+                Point eventPoint = new Point(event.getX(), event.getY());
+                boolean found = false;
+                StringBuilder label = new StringBuilder("Se seleccionó: ");
+                for (FigureFront figure : canvasState.figures()) {
+                    if (figure.isWithin(startPoint, eventPoint) || figure.figureBelongs(eventPoint)) {
+                        List<FigureFront> group = canvasState.getGroup(figure);
+                        if (!selectedFigures.containsAll(group)) selectedFigures.addAll(group);
+                        found = true;
+                        label.append(figure).append(" ");
+                    }
+                }
+
+                if (found) {
+
+                    statusPane.updateStatus(label.toString());
+                } else {
+                    selectedFigures.clear();
+                    statusPane.updateStatus("Ninguna figura encontrada");
+                }
+                selectedFigures.updateCheckBox(shadowButton, Figure::hasShadow);
+                selectedFigures.updateCheckBox(beveledButton, Figure::hasBevel);
+                selectedFigures.updateCheckBox(gradientButton, Figure::hasGradient);
+                redrawCanvas();
+            }
+        });
+
+        canvas.setOnMouseDragged(event -> {
+            if (selectionButton.isSelected()) {
+                Point eventPoint = new Point(event.getX(), event.getY());
+                if (!selectedFigures.isEmpty()) {
+                    double diffX = (eventPoint.getX() - startPoint.getX()) / 100;
+                    double diffY = (eventPoint.getY() - startPoint.getY()) / 100;
+                    for (Figure figure : selectedFigures) {
+                        figure.moveFigure(diffX, diffY);
+                    }
+                    redrawCanvas();
+                }
+            }
+        });
+
+        setLeft(buttonsBox);
+        setRight(canvas);
+    }
+
+    void redrawCanvas() {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        for (FigureFront figure : canvasState.figures()) {
+            if (selectedFigures.contains(figure)) {
+                gc.setStroke(Color.RED);
+            } else {
+                gc.setStroke(lineColor);
+            }
+            figure.drawFigure(gc);
+        }
+    }
 }

@@ -1,25 +1,16 @@
 package backend.model;
 
-public class Square implements Figure {
+import backend.RGBColor;
 
-    private final Point topLeft, bottomRight;
+public class Square extends Rectangle {
 
-    public Square(Point topLeft, double size) {
-        this.topLeft = topLeft;
-        this.bottomRight = new Point(topLeft.x + size, topLeft.y + size);
-    }
-
-    public Point getTopLeft() {
-        return topLeft;
-    }
-
-    public Point getBottomRight() {
-        return bottomRight;
+    public Square(Point topLeft, double size, RGBColor color) {
+        super(topLeft, new Point(topLeft.getX() + size, topLeft.getY() + size), color);
     }
 
     @Override
     public String toString() {
-        return String.format("Cuadrado [ %s , %s ]", topLeft, bottomRight);
+        return String.format("Cuadrado [ %s , %s ]", getTopLeft(), getBottomRight());
     }
 
 }
